@@ -1,0 +1,9 @@
+{
+  "name": "blockBI",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/blockBI/src",
+  "projectType": "application",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project blockBI --web",
+  "targets": {}
+}
