@@ -1,12 +1,12 @@
 /// <reference types='vitest' />
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
-import { nxCopyAssetsPlugin } from '@nx/vite/plugins/nx-copy-assets.plugin';
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin'
+import { nxCopyAssetsPlugin } from '@nx/vite/plugins/nx-copy-assets.plugin'
 
 export default defineConfig(() => ({
   root: __dirname,
-  cacheDir: '../../node_modules/.vite/apps/blockBI',
+  cacheDir: '../../node_modules/.vite/packages/web',
   server: {
     port: 4200,
     host: 'localhost',
@@ -21,7 +21,7 @@ export default defineConfig(() => ({
   //  plugins: [ nxViteTsPaths() ],
   // },
   build: {
-    outDir: '../../dist/apps/blockBI',
+    outDir: '../../dist/packages/web',
     emptyOutDir: true,
     reportCompressedSize: true,
     commonjsOptions: {
@@ -35,8 +35,8 @@ export default defineConfig(() => ({
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     reporters: ['default'],
     coverage: {
-      reportsDirectory: '../../coverage/apps/blockBI',
+      reportsDirectory: '../../coverage/packages/web',
       provider: 'v8' as const,
     },
   },
-}));
+}))
