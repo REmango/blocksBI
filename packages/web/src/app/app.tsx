@@ -3,7 +3,7 @@ import NxWelcome from './nx-welcome';
 export function App() {
   return (
     <div>
-      12
+      hello
       <NxWelcome title="web" />
     </div>
   );
