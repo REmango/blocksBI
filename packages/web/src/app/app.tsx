@@ -1,12 +1,13 @@
-import NxWelcome from './nx-welcome';
+import RouterContainer from '@/router'
 
-export function App() {
-  return (
-    <div>
-      hello
-      <NxWelcome title="web" />
-    </div>
-  );
-}
+import { Router, BrowserRouter } from 'react-router'
 
-export default App;
+const App = () => (
+  <div className="App">
+    <BrowserRouter>
+      <RouterContainer />
+    </BrowserRouter>
+  </div>
+)
+
+export default App
