@@ -21,6 +21,7 @@ export default defineConfig(() => ({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
+      '@block-bi/drag-canvas': path.resolve(__dirname, '../drag-canvas/src/index.ts'),
     },
   },
   // Uncomment this if you are using workers.
