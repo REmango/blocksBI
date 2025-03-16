@@ -143,7 +143,6 @@ const DraggableItem: React.FC<DraggableItemProps> = (props) => {
     const deltaX = mouseClickPosition.mouseX - event.pageX
     const deltaY = mouseClickPosition.mouseY - event.pageY
 
-    console.log('deltaX', deltaX, deltaY)
     const curHandle = handleRef.current
     const bounds = resizeLimitsRef.current as ResizeLimit
     if (curHandle.includes('b')) {
@@ -265,14 +264,6 @@ const App: React.FC = () => {
   const handleDragEnd = (event: any) => {
     const { active, delta } = event
     const { id } = active
-
-    // setPositions((prevPositions) => ({
-    //   ...prevPositions,
-    //   [id]: {
-    //     x: prevPositions[id].x + delta.x,
-    //     y: prevPositions[id].y + delta.y,
-    //   },
-    // }))
 
     const eventName = `${id}-dragEnd`
 
