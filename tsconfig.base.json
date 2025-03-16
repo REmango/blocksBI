@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@block-bi/drag-canvas": ["packages/drag-canvas/src/index.ts"]
+      "@block-bi/drag-canvas": ["packages/drag-canvas/src/index.ts"],
+      "@block-bi/material": ["packages/material/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
