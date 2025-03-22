@@ -1,53 +1,128 @@
 .handle {
-  box-sizing: border-box;
   position: absolute;
-  width: 10px;
-  height: 10px;
-  background: #ffffff;
-  border: 1px solid #333;
-  box-shadow: 0 0 2px #bbb;
+  border: 1px solid #ef7541;
+  height: 8px;
+  width: 8px;
+  box-sizing: border-box;
+  transition: all 300ms linear;
+  border-radius: 2px;
+  background-color: #fff;
+  display: none;
+}
+.handle.active {
+  display: block;
 }
 .handle-tl {
-  top: -5px;
-  left: -5px;
+  width: 8px;
+  height: 8px;
+  top: -3px;
+  left: -3px;
   cursor: nw-resize;
 }
+
 .handle-tm {
-  top: -5px;
-  left: calc(50% - 4px);
-  /*margin-left: -5px;*/
+  width: 24px;
+  top: -3px ;
+  left: 50% ;
+  transform: translateX(-50%);
   cursor: n-resize;
 }
+
 .handle-tr {
-  top: -5px;
-  right: -5px;
+  width: 8px;
+  height: 8px;
+  top: -3px;
+  right: -3px;
   cursor: ne-resize;
 }
+
 .handle-ml {
-  top: calc(50% - 4px);
-  /*margin-top: -5px;*/
-  left: -5px;
+  height: 24px ;
+  left: -3px ;
+  top: 50% ;
+  transform: translateY(-50%);
   cursor: w-resize;
 }
+
 .handle-mr {
-  top: calc(50% - 4px);
-  /*margin-top: -5px;*/
-  right: -5px;
+  right: -3px ;
+  height: 24px ;
+  top: 50% ;
+  transform: translateY(-50%);
   cursor: e-resize;
 }
+
 .handle-bl {
-  bottom: -5px;
-  left: -5px;
+  width: 8px;
+  height: 8px;
+  bottom: -3px;
+  left: -3px;
   cursor: sw-resize;
 }
+
 .handle-bm {
-  bottom: -5px;
-  left: calc(50% - 4px);
-  /*margin-left: -5px;*/
+  width: 24px ;
+  bottom: -3px ;
+  left: 50% ;
+  transform: translateX(-50%);
   cursor: s-resize;
 }
+
 .handle-br {
-  bottom: -5px;
-  right: -5px;
+  width: 8px;
+  height: 8px;
+  bottom: -3px;
+  right: -3px;
   cursor: se-resize;
+}
+
+.drag-canvas-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(-90deg, rgb(225, 228, 234) 1px, transparent 0px) 0% 0% / 14px 13px, linear-gradient(rgb(225, 228, 234) 1px, transparent 0px) 0% 0% / 14px 13px, rgb(246, 247, 249);
+}
+
+
+.draggable-item.active::before {
+    left: 0;
+    pointer-events: none;
+    position: absolute;
+    content: "";
+    top: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 2px;
+    border: 1px solid #ef7541;
+}
+
+.drag-canvas-selection {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.draggable-item {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+}
+
+.drag-canvas-selected-area {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.drag-canvas-selected-area-content {
+  position: absolute;
+  border: 2px dashed #ef7541;
+  background-color: rgba(239, 117, 65, 0.2);
 }
