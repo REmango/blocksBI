@@ -193,10 +193,16 @@ const DraggableItem: React.FC<DraggableItemProps> = (props) => {
   useEffect(() => {
     const cb = () => {
       // 使用回调函数更新位置 避免闭包问题
-      setPosition((prevPositions) => ({
-        x: prevPositions.x + round((transformRef.current as Transform).x),
-        y: prevPositions.y + round((transformRef.current as Transform).y),
-      }))
+      setPosition((prevPositions) => {
+        const tmp = transformRef.current as Transform
+        // 将transformRef.current重置
+        transformRef.current = null
+        return {
+          x: prevPositions.x + round(tmp?.x ?? 0),
+          y: prevPositions.y + round(tmp?.y ?? 0),
+        }
+      })
+
       notifyItemLayoutChange?.({ x: position.x, y: position.y, width, height })
     }
     eventBus.on(`${id}-dragEnd`, cb)
