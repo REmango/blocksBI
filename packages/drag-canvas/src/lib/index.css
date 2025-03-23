@@ -126,3 +126,8 @@
   border: 2px dashed #ef7541;
   background-color: rgba(239, 117, 65, 0.2);
 }
+
+.group-selected-area {
+  border: 2px dashed #2f54eb;
+  background-color: rgba(89, 216, 247, 0.05);
+}

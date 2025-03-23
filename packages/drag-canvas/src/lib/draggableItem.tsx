@@ -178,6 +178,17 @@ const DraggableItem: React.FC<DraggableItemProps> = (props) => {
     }
   }, [transform])
 
+  // 监听选中区域移动事件
+  useEffect(() => {
+    const cb = (data: { transform: Transform }) => {
+      transformRef.current = data.transform
+    }
+    eventBus.on(`${id}-transform`, cb)
+    return () => {
+      eventBus.off(`${id}-transform`, cb)
+    }
+  }, [])
+
   // 监听事件
   useEffect(() => {
     const cb = () => {
@@ -239,9 +250,10 @@ const DraggableItem: React.FC<DraggableItemProps> = (props) => {
     position: 'absolute',
     top: position.y,
     left: position.x,
-    transform: transform ? CSS.Translate.toString(transformRef.current) : undefined,
+    transform: transform || store.isGroupSelected ? CSS.Translate.toString(transformRef.current) : undefined,
     width: width,
     height: height,
+    userSelect: 'none',
     backgroundColor: id === 'item1' ? '#ddd' : '#aaa',
   }
 
@@ -396,6 +408,12 @@ const DraggableItem: React.FC<DraggableItemProps> = (props) => {
   }
 
   const handleMouseClick = () => {
+    const { selectedIds, isGroupSelected } = store
+    // 分为两种情况，包含id 或者 不包含id
+    if (selectedIds.includes(id) && isGroupSelected) {
+      return
+    }
+
     // 单选
     dispatch({
       type: CanvasActionType.SET_SELECTED_IDS,
@@ -411,6 +429,7 @@ const DraggableItem: React.FC<DraggableItemProps> = (props) => {
       {...listeners}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      id={id}
     >
       <div
         className={classNames('draggable-item', {

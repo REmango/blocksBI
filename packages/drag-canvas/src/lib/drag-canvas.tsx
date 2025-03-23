@@ -4,7 +4,11 @@ import { restrictToParentElement } from '@dnd-kit/modifiers'
 
 import SelectCanvas from './selectCanvas'
 import eventBus from './utils/eventBus'
+
+import { getSelectedAreaByDomIds } from './utils/'
 import CanvasContext, { CanvasActionType, canvasReducer } from './canvasContext'
+
+import SelectItem from './selectItem'
 
 import { DragCanvasProps } from './IDrag'
 import './index.css'
@@ -13,6 +17,13 @@ const DragCanvas: React.FC<DragCanvasProps> = (props) => {
   const { width, height, children } = props
 
   const [selectedArea, setSelectedArea] = useState<{
+    x: number
+    y: number
+    width: number
+    height: number
+  } | null>(null)
+
+  const [groupSelectedArea, setGroupSelectedArea] = useState<{
     x: number
     y: number
     width: number
@@ -62,6 +73,9 @@ const DragCanvas: React.FC<DragCanvasProps> = (props) => {
         type: CanvasActionType.SET_IS_GROUP_SELECTED,
         payload: true,
       })
+
+      // 同时计算选中的区域
+      setGroupSelectedArea(getSelectedAreaByDomIds(store.selectedIds))
     } else {
       dispatch({
         type: CanvasActionType.SET_IS_GROUP_SELECTED,
@@ -84,6 +98,18 @@ const DragCanvas: React.FC<DragCanvasProps> = (props) => {
         <SelectCanvas setSelectedArea={setSelectedArea} />
         <DndContext onDragEnd={handleDragEnd} modifiers={[restrictToParentElement]} sensors={sensors}>
           {children}
+
+          {/* 选中区域 */}
+          {store.isGroupSelected && groupSelectedArea && (
+            <SelectItem
+              id="select-area"
+              x={groupSelectedArea.x - 1}
+              y={groupSelectedArea.y - 1}
+              width={groupSelectedArea.width + 2}
+              height={groupSelectedArea.height + 2}
+              selectedIds={store.selectedIds}
+            />
+          )}
         </DndContext>
         <div className="drag-canvas-selected-area">
           {selectedArea && (

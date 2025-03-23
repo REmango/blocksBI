@@ -47,3 +47,38 @@ export function isIntersect(
 
   return rect1.x < rect2Right && rect1Right > rect2.x && rect1.y < rect2Bottom && rect1Bottom > rect2.y
 }
+
+// 获取选中的区域
+export function getSelectedAreaByDomIds(domIds: string[]) {
+  const doms = domIds.map((id) => document.getElementById(id))
+
+  const xAxis = []
+  const yAxis = []
+
+  // 获取所有选中dom的position、width、height属性
+
+  for (const dom of doms) {
+    if (dom) {
+      const w = +dom.style.width.replace(/px/g, '')
+      const h = +dom.style.height.replace(/px/g, '')
+      const l = +dom.style.left.replace(/px/g, '')
+      const t = +dom.style.top.replace(/px/g, '')
+
+      console.log(w, h, l, t)
+
+      xAxis.push(l)
+      xAxis.push(l + w)
+      yAxis.push(t)
+      yAxis.push(t + h)
+    }
+  }
+
+  console.log(xAxis, yAxis)
+
+  const x = Math.min(...xAxis)
+  const y = Math.min(...yAxis)
+  const width = Math.max(...xAxis) - x
+  const height = Math.max(...yAxis) - y
+
+  return { x, y, width, height }
+}
