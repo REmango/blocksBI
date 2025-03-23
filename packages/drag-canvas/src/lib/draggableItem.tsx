@@ -4,17 +4,26 @@ import { CSS, Transform } from '@dnd-kit/utilities'
 import classNames from 'classnames'
 import eventBus from './utils/eventBus'
 import { addEvent, removeEvent, restrictToBounds, round, isIntersect } from './utils'
-import CanvasContext from './canvasContext'
+import CanvasContext, { CanvasActionType } from './canvasContext'
 import { handles } from './constants'
 import { DraggableItemProps, MouseDownClickPosition, ResizeLimit } from './IDrag'
 
 import './index.css'
-import { Store } from 'antd/es/form/interface'
 
 const DraggableItem: React.FC<DraggableItemProps> = (props) => {
-  const { id, maxWidth, maxHeight, initialPosition, snapTolerance = 5, minWidth, minHeight, children } = props
+  const {
+    id,
+    maxWidth,
+    maxHeight,
+    initialPosition,
+    snapTolerance = 5,
+    minWidth,
+    minHeight,
+    children,
+    notifyItemLayoutChange,
+  } = props
 
-  const { store, setStore } = useContext(CanvasContext)
+  const { store, dispatch } = useContext(CanvasContext)
 
   const [isInSelectedArea, setIsInSelectedArea] = useState(false)
 
@@ -157,6 +166,11 @@ const DraggableItem: React.FC<DraggableItemProps> = (props) => {
     }
   }
 
+  // 通知外层事件更新布局
+  useEffect(() => {
+    notifyItemLayoutChange?.({ x: position.x, y: position.y, width, height })
+  }, [position, width, height, notifyItemLayoutChange])
+
   useEffect(() => {
     if (transform !== null) {
       transformRef.current = transform
@@ -167,10 +181,12 @@ const DraggableItem: React.FC<DraggableItemProps> = (props) => {
   // 监听事件
   useEffect(() => {
     const cb = () => {
+      // 使用回调函数更新位置 避免闭包问题
       setPosition((prevPositions) => ({
         x: prevPositions.x + round((transformRef.current as Transform).x),
         y: prevPositions.y + round((transformRef.current as Transform).y),
       }))
+      notifyItemLayoutChange?.({ x: position.x, y: position.y, width, height })
     }
     eventBus.on(`${id}-dragEnd`, cb)
 
@@ -201,10 +217,10 @@ const DraggableItem: React.FC<DraggableItemProps> = (props) => {
       // 将选中状态设置为false
       if (isInSelectedArea) {
         // 更新选择状态
-        setStore((prevStore: Store) => ({
-          ...prevStore,
-          selectedIds: [...new Set([...prevStore.selectedIds, id])],
-        }))
+        dispatch({
+          type: CanvasActionType.MERGE_SELECTED_IDS,
+          payload: [id],
+        })
         setIsInSelectedArea(false)
       }
     }
@@ -212,7 +228,7 @@ const DraggableItem: React.FC<DraggableItemProps> = (props) => {
     return () => {
       eventBus.off('selectedAreaEnd', cb)
     }
-  }, [store, isInSelectedArea, setStore])
+  }, [store, isInSelectedArea, dispatch])
 
   const mouseDownClickPosition = useRef<MouseDownClickPosition | null>(null)
   const resizeLimitsRef = useRef<ResizeLimit | null>(null)
@@ -381,9 +397,9 @@ const DraggableItem: React.FC<DraggableItemProps> = (props) => {
 
   const handleMouseClick = () => {
     // 单选
-    setStore({
-      ...store,
-      selectedIds: [id],
+    dispatch({
+      type: CanvasActionType.SET_SELECTED_IDS,
+      payload: [id],
     })
   }
 
@@ -406,7 +422,11 @@ const DraggableItem: React.FC<DraggableItemProps> = (props) => {
           <div
             key={handle}
             className={classNames('handle', `handle-${handle}`, {
-              active: store.selectedIds.includes(id) && !isInSelectedArea,
+              active:
+                store.selectedIds.length === 1 &&
+                store.selectedIds.includes(id) &&
+                !isInSelectedArea &&
+                !store.isGroupSelected,
             })}
             onMouseDown={(event) => handleOnMouseDown(handle, event)}
             onPointerDown={(event) => {

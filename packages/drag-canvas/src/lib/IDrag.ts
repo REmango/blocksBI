@@ -12,6 +12,7 @@ interface DraggableItemProps {
   initialPosition?: Position
   snapTolerance?: number
   children?: React.ReactNode
+  notifyItemLayoutChange?: (layout: { x: number; y: number; width: number; height: number }) => void
 }
 
 interface MouseDownClickPosition {

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useContext, memo } from 'react'
-import CanvasContext from './canvasContext'
+import CanvasContext, { CanvasActionType } from './canvasContext'
 import { addEvent, removeEvent, restrictToBounds } from './utils/'
 import eventBus from './utils/eventBus'
 
@@ -9,7 +9,7 @@ interface SelectCanvasProps {
 
 const SelectCanvas = (props: SelectCanvasProps) => {
   const { setSelectedArea } = props
-  const { store, setStore } = useContext(CanvasContext)
+  const { store, dispatch } = useContext(CanvasContext)
   const isCanMove = useRef(false)
   const { canvasWidth, canvasHeight } = store
 
@@ -25,9 +25,9 @@ const SelectCanvas = (props: SelectCanvasProps) => {
 
   const handleMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
     setSelectedArea(null)
-    setStore({
-      ...store,
-      selectedIds: [],
+    dispatch({
+      type: CanvasActionType.SET_SELECTED_IDS,
+      payload: [],
     })
 
     isCanMove.current = true

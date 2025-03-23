@@ -1,10 +1,10 @@
-import React, { useState, useRef, useEffect, memo } from 'react'
+import React, { useState, useRef, useEffect, useReducer } from 'react'
 import { DndContext, useDraggable, useDndContext, PointerSensor, useSensor, useSensors } from '@dnd-kit/core'
 import { restrictToParentElement } from '@dnd-kit/modifiers'
 
 import SelectCanvas from './selectCanvas'
 import eventBus from './utils/eventBus'
-import CanvasContext, { CanvasContextType } from './canvasContext'
+import CanvasContext, { CanvasActionType, canvasReducer } from './canvasContext'
 
 import { DragCanvasProps } from './IDrag'
 import './index.css'
@@ -37,29 +37,47 @@ const DragCanvas: React.FC<DragCanvasProps> = (props) => {
     eventBus.emit(eventName, { delta })
   }
 
-  const [store, setStore] = useState<CanvasContextType['store']>({
+  const [store, dispatch] = useReducer(canvasReducer, {
     canvasWidth: width,
     canvasHeight: height,
     selectedIds: [],
+    isGroupSelected: false,
   })
 
   // 更新画布
   useEffect(() => {
-    setStore({
-      ...store,
-      canvasWidth: width,
-      canvasHeight: height,
+    dispatch({
+      type: CanvasActionType.SET_CANVAS_WIDTH,
+      payload: width,
+    })
+    dispatch({
+      type: CanvasActionType.SET_CANVAS_HEIGHT,
+      payload: height,
     })
   }, [width, height])
 
+  useEffect(() => {
+    if (store.selectedIds.length > 1) {
+      dispatch({
+        type: CanvasActionType.SET_IS_GROUP_SELECTED,
+        payload: true,
+      })
+    } else {
+      dispatch({
+        type: CanvasActionType.SET_IS_GROUP_SELECTED,
+        payload: false,
+      })
+    }
+  }, [store.selectedIds])
+
   return (
-    <CanvasContext.Provider value={{ store, setStore }}>
+    <CanvasContext.Provider value={{ store, dispatch }}>
       <div
         style={{
           position: 'relative',
           width: store.canvasWidth,
           height: store.canvasHeight,
-          border: '1px solid black',
+          border: '1px solid #eee',
         }}
       >
         <div className="drag-canvas-bg"></div>
