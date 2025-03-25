@@ -3,7 +3,7 @@ import { useDraggable, useDndContext } from '@dnd-kit/core'
 import { CSS, Transform } from '@dnd-kit/utilities'
 import classNames from 'classnames'
 import eventBus from './utils/eventBus'
-import { addEvent, removeEvent, restrictToBounds, round, isIntersect } from './utils'
+import { addEvent, removeEvent, restrictToBounds, round, isIntersect, calcLineValues } from './utils'
 import CanvasContext, { CanvasActionType } from './canvasContext'
 import { handles } from './constants'
 import { DraggableItemProps, MouseDownClickPosition, ResizeLimit } from './IDrag'
@@ -16,11 +16,12 @@ const DraggableItem: React.FC<DraggableItemProps> = (props) => {
     maxWidth,
     maxHeight,
     initialPosition,
-    snapTolerance = 5,
+    snapTolerance = 8,
     minWidth,
     minHeight,
     children,
     notifyItemLayoutChange,
+    initialSize,
   } = props
 
   const { store, dispatch } = useContext(CanvasContext)
@@ -38,8 +39,8 @@ const DraggableItem: React.FC<DraggableItemProps> = (props) => {
   })
   const context = useDndContext()
 
-  const [width, setWidth] = useState(150)
-  const [height, setHeight] = useState(150)
+  const [width, setWidth] = useState(initialSize?.width ?? 200)
+  const [height, setHeight] = useState(initialSize?.height ?? 200)
   const [position, setPosition] = useState(initialPosition || { x: 0, y: 0 })
   const [isMouseEnter, setIsMouseEnter] = useState(false)
 
@@ -55,7 +56,7 @@ const DraggableItem: React.FC<DraggableItemProps> = (props) => {
     let activeBottom = y + height
 
     // 初始化辅助线数据
-    const temArr = () => new Array(3).fill({ display: false, position: '', origin: '', lineLength: '' })
+    const temArr = () => new Array(3).fill(0).map(() => ({ display: false, position: '', origin: '', lineLength: '' }))
     const refLine: Record<string, any> = { vLine: temArr(), hLine: temArr() }
 
     // 获取所有节点
@@ -84,73 +85,119 @@ const DraggableItem: React.FC<DraggableItemProps> = (props) => {
       const r = l + w // 对齐目标right
       const b = t + h // 对齐目标的bottom
 
-      const hc = Math.abs(activeTop + height / 2 - (t + h / 2)) <= snapTolerance // 水平中线
-      const vc = Math.abs(activeLeft + width / 2 - (l + w / 2)) <= snapTolerance // 垂直中线
+      const hc = t + h / 2
+      const vc = l + w / 2
+      const activeHCenter = activeTop + height / 2
+      const activeVCenter = activeLeft + width / 2
 
-      const ts = Math.abs(t - activeBottom) <= snapTolerance // 从上到下
-      const TS = Math.abs(b - activeBottom) <= snapTolerance // 从上到下
-      const bs = Math.abs(t - activeTop) <= snapTolerance // 从下到上
-      const BS = Math.abs(b - activeTop) <= snapTolerance // 从下到上
+      // 水平中线
+      const hcC = Math.abs(hc - activeHCenter) <= snapTolerance // 水平中线和中线
+      const hcT = Math.abs(hc - activeTop) <= snapTolerance // 水平中线和top
+      const hcB = Math.abs(hc - activeBottom) <= snapTolerance // 水平中线和bottom
+      const htC = Math.abs(t - activeHCenter) <= snapTolerance // 水平中线和top
+      const hbC = Math.abs(b - activeHCenter) <= snapTolerance // 水平中线和bottom
 
-      const ls = Math.abs(l - activeRight) <= snapTolerance // 外左
-      const LS = Math.abs(r - activeRight) <= snapTolerance // 外左
-      const rs = Math.abs(l - activeLeft) <= snapTolerance // 外右
-      const RS = Math.abs(r - activeLeft) <= snapTolerance // 外右
+      // 垂直中线
+      const vcC = Math.abs(vc - activeVCenter) <= snapTolerance // 垂直中线和中线
+      const vcL = Math.abs(vc - activeLeft) <= snapTolerance // 垂直中线和left
+      const vcR = Math.abs(vc - activeRight) <= snapTolerance // 垂直中线和right
+      const vlC = Math.abs(l - activeVCenter) <= snapTolerance // 垂直中线和left
+      const vrC = Math.abs(r - activeVCenter) <= snapTolerance // 垂直中线和right
 
-      tem['display'] = [ts, TS, bs, BS, hc, hc, ls, LS, rs, RS, vc, vc]
-      tem['position'] = [t, b, t, b, t + h / 2, t + h / 2, l, r, l, r, l + w / 2, l + w / 2]
+      const tB = Math.abs(t - activeBottom) <= snapTolerance // 上下
+      const bB = Math.abs(b - activeBottom) <= snapTolerance // 下下
+      const tT = Math.abs(t - activeTop) <= snapTolerance // 上上
+      const bT = Math.abs(b - activeTop) <= snapTolerance // 下上
+
+      const lR = Math.abs(l - activeRight) <= snapTolerance // 左右
+      const rR = Math.abs(r - activeRight) <= snapTolerance // 右右
+      const lL = Math.abs(l - activeLeft) <= snapTolerance // 左左
+      const rL = Math.abs(r - activeLeft) <= snapTolerance // 右左
+
+      tem['display'] = [tB, bB, tT, bT, hcC, hcT, hcB, htC, hbC, lR, rR, lL, rL, vcC, vcL, vcR, vlC, vrC]
+
+      tem['position'] = [t, b, t, b, hc, hc, hc, t, b, l, r, l, r, vc, vc, vc, l, r]
+      // 辅助线坐标与是否显示(display)对应的数组,易于循环遍历
+      const arrTem = [0, 1, 0, 1, 2, 2, 2, 0, 1, 0, 1, 0, 1, 2, 2, 2, 0, 1]
 
       // fix：中线自动对齐，元素可能超过父元素边界的问题
 
       let snapX = null
       let snapY = null
-      if (ts) {
+      if (tB) {
         snapY = t - height
         tem.value.y[0].push(l, r, activeLeft, activeRight)
       }
-      if (bs) {
+      if (tT) {
         snapY = t
         tem.value.y[0].push(l, r, activeLeft, activeRight)
       }
-      if (TS) {
+      if (bB) {
         snapY = b - height
-
         tem.value.y[1].push(l, r, activeLeft, activeRight)
       }
-      if (BS) {
+      if (bT) {
         snapY = b
-
         tem.value.y[1].push(l, r, activeLeft, activeRight)
       }
 
-      if (ls) {
+      if (lR) {
         snapX = l - width
-
         tem.value.x[0].push(t, b, activeTop, activeBottom)
       }
-      if (rs) {
+      if (lL) {
         snapX = l
-
         tem.value.x[0].push(t, b, activeTop, activeBottom)
       }
-      if (LS) {
+      if (rR) {
         snapX = r - width
-
         tem.value.x[1].push(t, b, activeTop, activeBottom)
       }
-      if (RS) {
+      if (rL) {
         snapX = r
         tem.value.x[1].push(t, b, activeTop, activeBottom)
       }
 
-      if (hc) {
+      if (hcC) {
         snapY = t + h / 2 - height / 2
-
         tem.value.y[2].push(l, r, activeLeft, activeRight)
       }
-      if (vc) {
+      if (vcC) {
         snapX = l + w / 2 - width / 2
         tem.value.x[2].push(t, b, activeTop, activeBottom)
+      }
+
+      if (hcT) {
+        snapY = hc
+        tem.value.y[2].push(l, r, activeLeft, activeRight)
+      }
+      if (hcB) {
+        snapY = hc - height
+        tem.value.y[2].push(l, r, activeLeft, activeRight)
+      }
+      if (htC) {
+        snapY = t - height / 2
+        tem.value.y[0].push(l, r, activeLeft, activeRight)
+      }
+      if (hbC) {
+        snapY = b - height / 2
+        tem.value.y[1].push(l, r, activeLeft, activeRight)
+      }
+      if (vcL) {
+        snapX = vc
+        tem.value.x[2].push(t, b, activeTop, activeBottom)
+      }
+      if (vcR) {
+        snapX = vc - width
+        tem.value.x[2].push(t, b, activeTop, activeBottom)
+      }
+      if (vlC) {
+        snapX = l - width / 2
+        tem.value.x[0].push(t, b, activeTop, activeBottom)
+      }
+      if (vrC) {
+        snapX = r - width / 2
+        tem.value.x[1].push(t, b, activeTop, activeBottom)
       }
 
       // 设置吸附
@@ -163,7 +210,23 @@ const DraggableItem: React.FC<DraggableItemProps> = (props) => {
           y: snapY - position.y,
         }
       }
+
+      for (let i = 0; i <= arrTem.length; i++) {
+        // 前6为Y辅助线,后6为X辅助线
+        const xory = i < 9 ? 'y' : 'x'
+        const horv = i < 9 ? 'hLine' : 'vLine'
+        if (tem.display[i]) {
+          const { origin, length } = calcLineValues(tem.value[xory][arrTem[i]])
+          refLine[horv][arrTem[i]].display = tem.display[i]
+          refLine[horv][arrTem[i]].position = tem.position[i] + 'px'
+          refLine[horv][arrTem[i]].origin = origin
+          refLine[horv][arrTem[i]].lineLength = length
+        }
+      }
     }
+
+    // 发送吸附事件
+    eventBus.emit(`snapLine`, refLine)
   }
 
   // 通知外层事件更新布局

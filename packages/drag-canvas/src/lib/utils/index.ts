@@ -82,3 +82,9 @@ export function getSelectedAreaByDomIds(domIds: string[]) {
 
   return { x, y, width, height }
 }
+
+export function calcLineValues(arr: number[]) {
+  const length = Math.max(...arr) - Math.min(...arr) + 'px'
+  const origin = Math.min(...arr) + 'px'
+  return { length, origin }
+}
