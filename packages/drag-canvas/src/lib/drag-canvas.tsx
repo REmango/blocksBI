@@ -2,13 +2,12 @@ import React, { useState, useRef, useEffect, useReducer } from 'react'
 import { DndContext, useDraggable, useDndContext, PointerSensor, useSensor, useSensors } from '@dnd-kit/core'
 import { restrictToParentElement } from '@dnd-kit/modifiers'
 
-import SelectCanvas from './selectCanvas'
 import eventBus from './utils/eventBus'
-
 import { getSelectedAreaByDomIds } from './utils/'
 import CanvasContext, { CanvasActionType, canvasReducer } from './canvasContext'
+import SelectCanvas from './selectCanvas'
 
-import SelectItem from './selectItem'
+import SelectItem from './selectCanvas/selectItem'
 
 import { DragCanvasProps } from './IDrag'
 import './index.css'
