@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useReducer } from 'react'
+import React, { useState, memo, useEffect, useReducer } from 'react'
 import { DndContext, useDraggable, useDndContext, PointerSensor, useSensor, useSensors } from '@dnd-kit/core'
 import { restrictToParentElement } from '@dnd-kit/modifiers'
 
@@ -6,9 +6,8 @@ import eventBus from './utils/eventBus'
 import { getSelectedAreaByDomIds } from './utils/'
 import CanvasContext, { CanvasActionType, canvasReducer } from './canvasContext'
 import SelectCanvas from './selectCanvas'
-
 import SelectItem from './selectCanvas/selectItem'
-
+import SnapCanvas from './snapCanvas'
 import { DragCanvasProps } from './IDrag'
 import './index.css'
 
@@ -45,6 +44,7 @@ const DragCanvas: React.FC<DragCanvasProps> = (props) => {
     const eventName = `${id}-dragEnd`
 
     eventBus.emit(eventName, { delta })
+    eventBus.emit(`canvas-dragEnd`, { delta })
   }
 
   const [store, dispatch] = useReducer(canvasReducer, {
@@ -123,9 +123,13 @@ const DragCanvas: React.FC<DragCanvasProps> = (props) => {
             />
           )}
         </div>
+
+        <div className="offscreen-canvas">
+          <SnapCanvas />
+        </div>
       </div>
     </CanvasContext.Provider>
   )
 }
 
-export default DragCanvas
+export default memo(DragCanvas)

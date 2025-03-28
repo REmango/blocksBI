@@ -225,6 +225,7 @@ const DraggableItem: React.FC<DraggableItemProps> = (props) => {
       }
     }
 
+    console.log(refLine)
     // 发送吸附事件
     eventBus.emit(`snapLine`, refLine)
   }

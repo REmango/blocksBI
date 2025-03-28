@@ -98,4 +98,4 @@ const SelectCanvas = (props: SelectCanvasProps) => {
   return <div className="drag-canvas-selection" onMouseDown={handleMouseDown} ref={domRef}></div>
 }
 
-export default SelectCanvas
+export default memo(SelectCanvas)

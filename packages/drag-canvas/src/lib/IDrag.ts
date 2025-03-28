@@ -44,4 +44,24 @@ interface DragCanvasProps {
   children: React.ReactNode
 }
 
-export type { Position, DraggableItemProps, MouseDownClickPosition, ResizeLimit, DragCanvasProps }
+interface SnapLine {
+  display: boolean
+  position: string
+  origin: string
+  lineLength: string
+}
+
+interface CanvasSnapLines {
+  vLine: SnapLine[]
+  hLine: SnapLine[]
+}
+
+export type {
+  Position,
+  DraggableItemProps,
+  MouseDownClickPosition,
+  ResizeLimit,
+  DragCanvasProps,
+  SnapLine,
+  CanvasSnapLines,
+}
