@@ -13,7 +13,7 @@
     }
   },
   "files": [],
-  "include": [],
+  "include": ["."],
   "references": [
     {
       "path": "./tsconfig.app.json"

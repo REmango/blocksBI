@@ -21,5 +21,11 @@
     "vitest.config.ts",
     "vitest.config.mts"
   ],
+  "references": [
+    {
+      "path": "../drag-canvas",
+      "d": true
+    }
+  ],
   "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx"]
 }
