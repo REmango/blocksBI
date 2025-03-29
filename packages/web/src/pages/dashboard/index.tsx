@@ -1,6 +1,30 @@
+import { Layout } from 'antd'
+import BiHeader from './header'
+import BiSider from './sider'
+import BiContent from './content'
+
+const { Header, Sider, Content } = Layout
+
 // 首页
 const Dashboard = () => {
-  return <div>Dashboard</div>
+  return (
+    <div>
+      <Layout className="h-screen ">
+        <Header
+          className="h-[40px]  flex leading-[40px] justify-between text-slate-200	pl-[18px] pr-[18px] items-center "
+          style={{ background: '#111' }}
+        >
+          <BiHeader />
+        </Header>
+        <Layout>
+          <BiSider />
+          <Content>
+            <BiContent />
+          </Content>
+        </Layout>
+      </Layout>
+    </div>
+  )
 }
 
 export default Dashboard

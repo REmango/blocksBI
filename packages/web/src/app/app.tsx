@@ -1,4 +1,5 @@
 import RouterContainer from '@/router'
+import { ConfigProvider } from 'antd'
 
 import { Router, BrowserRouter } from 'react-router'
 

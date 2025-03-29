@@ -1,0 +1,86 @@
+{
+  "id": "4875463",
+  "name": "blocksBi",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "1305461",
+      "name": "表格",
+      "font_class": "biaoge",
+      "unicode": "e63e",
+      "unicode_decimal": 58942
+    },
+    {
+      "icon_id": "586795",
+      "name": "chart-word-cloud",
+      "font_class": "chartwordcloud",
+      "unicode": "e6cd",
+      "unicode_decimal": 59085
+    },
+    {
+      "icon_id": "2471382",
+      "name": "散点图",
+      "font_class": "sandiantu",
+      "unicode": "e679",
+      "unicode_decimal": 59001
+    },
+    {
+      "icon_id": "4354248",
+      "name": "图表-折线图",
+      "font_class": "tubiao-zhexiantu",
+      "unicode": "eb96",
+      "unicode_decimal": 60310
+    },
+    {
+      "icon_id": "4354252",
+      "name": "图表-柱状图",
+      "font_class": "tubiao-zhuzhuangtu",
+      "unicode": "eb97",
+      "unicode_decimal": 60311
+    },
+    {
+      "icon_id": "8559549",
+      "name": "堆叠柱状图",
+      "font_class": "duidiezhuzhuangtu",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "10451684",
+      "name": "环形图",
+      "font_class": "huanxingtu",
+      "unicode": "e627",
+      "unicode_decimal": 58919
+    },
+    {
+      "icon_id": "18166410",
+      "name": "折线图,统计图",
+      "font_class": "chart-line-full",
+      "unicode": "e8c0",
+      "unicode_decimal": 59584
+    },
+    {
+      "icon_id": "29570567",
+      "name": "饼状图",
+      "font_class": "bingzhuangtu",
+      "unicode": "e6ad",
+      "unicode_decimal": 59053
+    },
+    {
+      "icon_id": "36431396",
+      "name": "半环形图",
+      "font_class": "banhuanxingtu",
+      "unicode": "e6f8",
+      "unicode_decimal": 59128
+    },
+    {
+      "icon_id": "41725562",
+      "name": "气泡图",
+      "font_class": "qipaotu",
+      "unicode": "e7b3",
+      "unicode_decimal": 59315
+    }
+  ]
+}
