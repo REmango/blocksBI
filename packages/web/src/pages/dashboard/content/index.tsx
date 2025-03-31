@@ -2,11 +2,17 @@ import DragCanvas, { DraggableItem } from '@block-bi/drag-canvas'
 
 // dndKit
 
+const CANVAS_PARENT_ID = 'CANVAS_PARENT_ID'
+
 const Content = () => {
   return (
-    <div className="bg-zinc-800 overflow-scroll h-full w-full pt-[40px] px-[60px]" style={{ background: '#282c34' }}>
+    <div
+      className="bg-zinc-800 overflow-scroll h-full w-full pt-[40px] px-[60px]"
+      style={{ background: '#282c34' }}
+      id={CANVAS_PARENT_ID}
+    >
       <div className="mb-[80px]">
-        <DragCanvas width={1000} height={1400}>
+        <DragCanvas width={1000} height={1400} canvasParentId={CANVAS_PARENT_ID}>
           <DraggableItem
             id="item1"
             initialPosition={{ x: 0, y: 0 }}

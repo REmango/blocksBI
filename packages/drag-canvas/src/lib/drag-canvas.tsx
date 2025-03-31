@@ -12,7 +12,7 @@ import { DragCanvasProps } from './IDrag'
 import './index.css'
 
 const DragCanvas: React.FC<DragCanvasProps> = (props) => {
-  const { width, height, children } = props
+  const { width, height, children, canvasParentId } = props
 
   const [selectedArea, setSelectedArea] = useState<{
     x: number
@@ -90,11 +90,10 @@ const DragCanvas: React.FC<DragCanvasProps> = (props) => {
           position: 'relative',
           width: store.canvasWidth,
           height: store.canvasHeight,
-          border: '1px solid #eee',
         }}
       >
         <div className="drag-canvas-bg"></div>
-        <SelectCanvas setSelectedArea={setSelectedArea} />
+        <SelectCanvas setSelectedArea={setSelectedArea} canvasParentId={canvasParentId} />
         <DndContext onDragEnd={handleDragEnd} modifiers={[restrictToParentElement]} sensors={sensors}>
           {children}
 

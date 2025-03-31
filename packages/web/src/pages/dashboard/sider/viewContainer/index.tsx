@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react'
 
-import { Collapse, theme } from 'antd'
+import { Collapse } from 'antd'
 import { CaretRightOutlined } from '@ant-design/icons'
 import type { CollapseProps } from 'antd'
 
