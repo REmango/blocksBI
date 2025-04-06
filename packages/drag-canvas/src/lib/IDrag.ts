@@ -43,6 +43,7 @@ interface DragCanvasProps {
   height: number
   children: React.ReactNode
   canvasParentId?: string
+  className?: string
 }
 
 interface SnapLine {

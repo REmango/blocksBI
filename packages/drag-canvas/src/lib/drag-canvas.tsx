@@ -12,7 +12,7 @@ import { DragCanvasProps } from './IDrag'
 import './index.css'
 
 const DragCanvas: React.FC<DragCanvasProps> = (props) => {
-  const { width, height, children, canvasParentId } = props
+  const { width, height, children, canvasParentId, className } = props
 
   const [selectedArea, setSelectedArea] = useState<{
     x: number
@@ -91,6 +91,7 @@ const DragCanvas: React.FC<DragCanvasProps> = (props) => {
           width: store.canvasWidth,
           height: store.canvasHeight,
         }}
+        className={className}
       >
         <div className="drag-canvas-bg"></div>
         <SelectCanvas setSelectedArea={setSelectedArea} canvasParentId={canvasParentId} />

@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom/client'
 
 import App from './app/app'
 
+import './app.css'
 import './rewrite.css'
 import './iconfont/iconfont.css'
 
