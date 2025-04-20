@@ -25,7 +25,7 @@ const BiSider = () => {
   ]
 
   return (
-    <Sider width={260} className="sider text-slate-300 	" style={{ background: '#181a1b' }}>
+    <Sider width={260} className="sider text-slate-300  select-none	" style={{ background: '#181a1b' }}>
       <Tabs defaultActiveKey="1" items={items} centered />
     </Sider>
   )

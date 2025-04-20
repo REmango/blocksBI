@@ -1,12 +1,16 @@
+import { useRef } from 'react'
 import DragCanvas, { DraggableItem } from '@block-bi/drag-canvas'
 
 import ViewFooter from './viewFooter'
 
+import { CANVAS_PARENT_ID } from '../constants'
+import useIconDrag from '../hook/useIconDrag'
 // dndKit
 
-const CANVAS_PARENT_ID = 'CANVAS_PARENT_ID'
-
 const Content = () => {
+  const canvasRef = useRef<HTMLDivElement | null>(null)
+  useIconDrag(canvasRef)
+
   return (
     <>
       <div
@@ -15,7 +19,13 @@ const Content = () => {
         id={CANVAS_PARENT_ID}
       >
         <div className="mb-[80px] px-[40px] ">
-          <DragCanvas width={1000} height={1400} canvasParentId={CANVAS_PARENT_ID} className="mx-auto">
+          <DragCanvas
+            width={1000}
+            height={1400}
+            canvasParentId={CANVAS_PARENT_ID}
+            className="mx-auto"
+            canvasRef={canvasRef}
+          >
             <DraggableItem
               id="item1"
               initialPosition={{ x: 0, y: 0 }}

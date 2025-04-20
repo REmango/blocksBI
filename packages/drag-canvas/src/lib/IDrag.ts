@@ -44,6 +44,7 @@ interface DragCanvasProps {
   children: React.ReactNode
   canvasParentId?: string
   className?: string
+  canvasRef?: React.RefObject<HTMLDivElement | null>
 }
 
 interface SnapLine {

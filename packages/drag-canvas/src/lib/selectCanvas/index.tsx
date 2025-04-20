@@ -61,7 +61,6 @@ const SelectCanvas = (props: SelectCanvasProps) => {
     if (!isCanMove.current) {
       return
     }
-    console.log('left', event.clientX, event.clientY)
     const { left: rectLeft, top: rectTop } = domRef.current?.getBoundingClientRect() as DOMRect
 
     // 获取当前鼠标位置

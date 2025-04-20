@@ -64,16 +64,12 @@ export function getSelectedAreaByDomIds(domIds: string[]) {
       const l = +dom.style.left.replace(/px/g, '')
       const t = +dom.style.top.replace(/px/g, '')
 
-      console.log(w, h, l, t)
-
       xAxis.push(l)
       xAxis.push(l + w)
       yAxis.push(t)
       yAxis.push(t + h)
     }
   }
-
-  console.log(xAxis, yAxis)
 
   const x = Math.min(...xAxis)
   const y = Math.min(...yAxis)

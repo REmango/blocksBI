@@ -1,8 +1,10 @@
 import type { CSSProperties } from 'react'
-
 import { Collapse } from 'antd'
 import { CaretRightOutlined } from '@ant-design/icons'
 import type { CollapseProps } from 'antd'
+
+import classNames from 'classnames'
+import { COMPONENT_ICON_ITEM } from '@/pages/dashboard/constants'
 
 import Search from '../search'
 
@@ -34,14 +36,18 @@ const ViewContainer = () => {
       children: (
         <div className="flex flex-wrap">
           {chartList.map((item) => (
-            <div key={item.key} className="basis-1/3 flex flex-col items-center cursor-pointer">
+            <div
+              key={item.key}
+              className={classNames('basis-1/3 flex flex-col items-center cursor-pointer  ', COMPONENT_ICON_ITEM)}
+            >
               <div className="mb-[4px]">{item.icon}</div>
-              <div className="text-sm text-center text-orange-400">{item.label}</div>
+              <div className="text-[10px] text-center text-orange-400  text-ellipsis overflow-hidden">{item.label}</div>
             </div>
           ))}
         </div>
       ),
       style: panelStyle,
+      className: '',
     },
     {
       key: '2',
