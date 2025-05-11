@@ -76,7 +76,7 @@ function useIconDrag(canvasRef: React.RefObject<HTMLDivElement | null>) {
       //   console.log('dragenter', event?.dragEvent?.target)
       // },
       ondrop: (event) => {
-        console.log('drop', event?.dragEvent?.target)
+        console.log('drop', event?.dragEvent?.target, event?.dragEvent?.target.dataset.id)
       },
     })
 

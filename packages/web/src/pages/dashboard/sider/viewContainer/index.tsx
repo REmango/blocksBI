@@ -6,62 +6,42 @@ import type { CollapseProps } from 'antd'
 import classNames from 'classnames'
 import { COMPONENT_ICON_ITEM } from '@/pages/dashboard/constants'
 
+import { leftMenuConfig } from '@block-bi/material'
+console.log(leftMenuConfig)
+
 import Search from '../search'
 
 const ViewContainer = () => {
-  const text = 'sdfsf'
-
-  const chartList = [
-    {
-      key: '1',
-      label: '简单线图',
-      icon: <div className="iconfont icon-tubiao-zhexiantu text-chart text-orange-400"></div>,
-    },
-    {
-      key: '2',
-      label: '堆叠面积图',
-      icon: <div className="iconfont icon-chart-line-full text-chart text-orange-400"></div>,
-    },
-    {
-      key: '3',
-      label: '面积图',
-      icon: <div className="iconfont icon-chart-line-full text-chart text-orange-400"></div>,
-    },
-  ]
-
-  const getItems: (panelStyle: CSSProperties) => CollapseProps['items'] = (panelStyle) => [
-    {
-      key: '1',
-      label: '线图',
-      children: (
-        <div className="flex flex-wrap">
-          {chartList.map((item) => (
-            <div
-              key={item.key}
-              className={classNames('basis-1/3 flex flex-col items-center cursor-pointer  ', COMPONENT_ICON_ITEM)}
-            >
-              <div className="mb-[4px]">{item.icon}</div>
-              <div className="text-[10px] text-center text-orange-400  text-ellipsis overflow-hidden">{item.label}</div>
-            </div>
-          ))}
-        </div>
-      ),
-      style: panelStyle,
-      className: '',
-    },
-    {
-      key: '2',
-      label: '柱状图',
-      children: <p>{text}</p>,
-      style: panelStyle,
-    },
-    {
-      key: '3',
-      label: '饼图',
-      children: <p>{text}</p>,
-      style: panelStyle,
-    },
-  ]
+  const getItems: (panelStyle: CSSProperties) => CollapseProps['items'] = (panelStyle) => {
+    const items: CollapseProps['items'] = []
+    Object.entries(leftMenuConfig).forEach(([key, value]) => {
+      items.push({
+        key,
+        label: key,
+        style: panelStyle,
+        className: '',
+        children: (
+          <div className="flex flex-wrap">
+            {value.map((item) => (
+              <div
+                key={item.key}
+                className={classNames('basis-1/3 flex flex-col items-center cursor-pointer ', COMPONENT_ICON_ITEM)}
+                data-id={item.key}
+              >
+                <div className="mb-[4px]">
+                  <div className={classNames('iconfont text-chart text-orange-400', item.icon)}></div>
+                </div>
+                <div className="text-[10px] text-center text-orange-400  text-ellipsis overflow-hidden">
+                  {item.name}
+                </div>
+              </div>
+            ))}
+          </div>
+        ),
+      })
+    })
+    return items
+  }
 
   const panelStyle: CSSProperties = {
     marginBottom: 0,
@@ -69,6 +49,9 @@ const ViewContainer = () => {
     borderRadius: 0,
     border: 'none',
   }
+
+  // 获取默认展开的key
+  const defaultActiveKey = Object.keys(leftMenuConfig).map((key) => key)
 
   return (
     <div className="chart-container">
@@ -78,7 +61,7 @@ const ViewContainer = () => {
       <div>
         <Collapse
           bordered={false}
-          defaultActiveKey={['1']}
+          defaultActiveKey={defaultActiveKey}
           expandIcon={({ isActive }) => <CaretRightOutlined rotate={isActive ? 90 : 0} />}
           items={getItems(panelStyle)}
         />

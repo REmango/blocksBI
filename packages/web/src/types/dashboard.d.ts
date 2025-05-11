@@ -6,18 +6,22 @@ export interface CardLayout {
   height: number
 }
 
-export interface Page {
-  id: string
-  name: string
-  cardLayoutList: CardLayout[]
+type PageLayout = CardLayout[]
+
+export interface CardItem<T> {
+  props: T
 }
 
-export interface CardViewMap<T> {
-  props: T
+export interface CardIMap<T> {
+  [key: string]: CardItem<T>
 }
 
 export interface DashboardStore {
   currentPageIndex: number
-  pageList: Page[]
+  pageList: PageLayout[]
+  cardMap: CardIMap<any>
   currentEditingCardId: string
+  setCurrentPageIndex: (currentPageIndex: number) => void
+  setCurrentEditingCardId: (currentEditingCardId: string) => void
+  addPage: () => void
 }

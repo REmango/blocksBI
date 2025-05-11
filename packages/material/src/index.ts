@@ -1,1 +1,3 @@
-export * from './lib/material'
+export * from './constants'
+
+export * from './config'

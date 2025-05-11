@@ -25,6 +25,10 @@
     {
       "path": "../drag-canvas",
       "d": true
+    },
+    {
+      "path": "../material",
+      "d": true
     }
   ],
   "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx"]

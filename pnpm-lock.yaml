@@ -29,6 +29,7 @@ importers:
       '@testing-library/jest-dom': ^6.6.3
       '@testing-library/react': 16.1.0
       '@types/jest': ^29.5.14
+      '@types/lodash': ^4.17.16
       '@types/node': 18.16.9
       '@types/react': 19.0.0
       '@types/react-dom': 19.0.0
@@ -40,6 +41,7 @@ importers:
       autoprefixer: 10.4.13
       babel-jest: ^29.7.0
       classnames: ^2.5.1
+      echarts: ^5.6.0
       eslint: ^9.8.0
       eslint-config-prettier: ^9.0.0
       eslint-plugin-import: 2.31.0
@@ -51,6 +53,7 @@ importers:
       jest-environment-jsdom: ^29.7.0
       jiti: 2.4.2
       jsdom: ~22.1.0
+      lodash: ^4.17.21
       nanoid: ^5.1.5
       nx: 20.5.0
       postcss: 8.4.38
@@ -80,7 +83,9 @@ importers:
       '@typescript-eslint/parser': 8.26.0_ez5pru2i6jn6d7kfbb5b5jzwla
       antd: 5.24.3_nnrd3gsncyragczmpvfhocinkq
       classnames: 2.5.1
+      echarts: 5.6.0
       interactjs: 1.10.27
+      lodash: 4.17.21
       nanoid: 5.1.5
       react: 18.3.1
       react-dom: 18.3.1_react@18.3.1
@@ -107,6 +112,7 @@ importers:
       '@testing-library/jest-dom': 6.6.3
       '@testing-library/react': 16.1.0_xhdhmnm4r3i2wdgimtx6557esq
       '@types/jest': 29.5.14
+      '@types/lodash': 4.17.16
       '@types/node': 18.16.9
       '@types/react': 19.0.0
       '@types/react-dom': 19.0.0
@@ -4493,6 +4499,10 @@ packages:
       '@types/node': 18.16.9
     dev: true
 
+  /@types/lodash/4.17.16:
+    resolution: {integrity: sha512-HX7Em5NYQAXKW+1T+FiuG27NGwzJfCX3s1GjOa7ujxZa52kjJLOr4FUxT+giF6Tgxv1e+/czV/iTtBw27WTU9g==}
+    dev: true
+
   /@types/node/18.16.9:
     resolution: {integrity: sha512-IeB32oIV4oGArLrd7znD2rkHQ6EDCM+2Sr76dJnrHwv9OHBTTM6nuDLK9bmikXzPa0ZlWMWtRGo/Uw4mrzQedA==}
 
@@ -6881,6 +6891,13 @@ packages:
     dependencies:
       safe-buffer: 5.2.1
     dev: true
+
+  /echarts/5.6.0:
+    resolution: {integrity: sha512-oTbVTsXfKuEhxftHqL5xprgLoc0k7uScAwtryCgWF6hPYFLRwOUHiFmHGCBKP5NPFNkDVopOieyUqYGH8Fa3kA==}
+    dependencies:
+      tslib: 2.3.0
+      zrender: 5.6.1
+    dev: false
 
   /ee-first/1.1.1:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
@@ -9714,7 +9731,6 @@ packages:
 
   /lodash/4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
-    dev: true
 
   /log-symbols/4.1.0:
     resolution: {integrity: sha512-8XPvpAA8uyhfteu8pIvQxpJZ7SYYdpUivZpGy6sFsBuKRY/7rQGavedeB8aK+Zkyq6upMFVL/9AW6vOYzfRyLg==}
@@ -12782,6 +12798,10 @@ packages:
       strip-bom: 3.0.0
     dev: true
 
+  /tslib/2.3.0:
+    resolution: {integrity: sha512-N82ooyxVNm6h1riLCoyS9e3fuJ3AMG2zIZs2Gd1ATcSFjSA23Q0fzjjZeh0jbJvWVDZ0cJT8yaNNaaXHzueNjg==}
+    dev: false
+
   /tslib/2.8.1:
     resolution: {integrity: sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==}
 
@@ -13633,6 +13653,12 @@ packages:
   /yocto-queue/0.1.0:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
+
+  /zrender/5.6.1:
+    resolution: {integrity: sha512-OFXkDJKcrlx5su2XbzJvj/34Q3m6PvyCZkVPHGYpcCJ52ek4U/ymZyfuV1nKE23AyBJ51E/6Yr0mhZ7xGTO4ag==}
+    dependencies:
+      tslib: 2.3.0
+    dev: false
 
   /zustand/5.0.3_sekkehbmyzf5pa6ktig5zk22iy:
     resolution: {integrity: sha512-14fwWQtU3pH4dE0dOpdMiWjddcH+QzKIgk1cl8epwSE7yag43k/AD/m4L6+K7DytAOr9gGBe3/EXj9g7cdostg==}

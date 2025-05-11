@@ -4,13 +4,9 @@
   --color-sider-text: #e5e7eb;
 }
 
-.sider {
+.sider, .view-footer {
   .ant-tabs-nav-list {
     width: 100%;
-  }
-
-  .ant-tabs-tab {
-    flex: 1;
   }
 
   .ant-tabs .ant-tabs-tab {
@@ -83,5 +79,12 @@
 
   .ant-collapse > .ant-collapse-item > .ant-collapse-header {
     padding: 10px 8px;
+  }
+}
+
+
+.sider {
+  .ant-tabs-tab {
+    flex: 1;
   }
 }
