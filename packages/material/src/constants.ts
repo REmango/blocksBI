@@ -10,3 +10,10 @@ export enum CARD_KEYS {
   SCATTER_SCATTER_LINE = 'scatter-scatter-line',
   BAR_LINE_MIXED = 'bar-line-mixed',
 }
+
+export enum COMPONENT_NAME {
+  SWITCH = 'switch',
+  INPUT = 'input',
+  INPUT_NUMBER = 'input-number',
+  COLOR_PICKER = 'color-picker',
+}

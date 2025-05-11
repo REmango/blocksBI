@@ -15,10 +15,8 @@ const siderConfig = {
   [CARD_KEYS.PIE]: pie.siderConfig,
   [CARD_KEYS.SCATTER]: scatter.siderConfig,
 }
-
-const leftMenuConfig = groupBy(siderConfig, 'groupName')
-
 // 分组生成侧边栏
+const leftMenuConfig = groupBy(siderConfig, 'groupName')
 
 const configMap = {
   [CARD_KEYS.LINE]: line,

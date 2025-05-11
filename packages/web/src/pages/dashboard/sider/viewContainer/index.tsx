@@ -6,9 +6,9 @@ import type { CollapseProps } from 'antd'
 import classNames from 'classnames'
 import { COMPONENT_ICON_ITEM } from '@/pages/dashboard/constants'
 
-import { leftMenuConfig } from '@block-bi/material'
+import { leftMenuConfig, getInitConfig, configMap } from '@block-bi/material'
 console.log(leftMenuConfig)
-
+console.log(getInitConfig(configMap.bar.styleConfig))
 import Search from '../search'
 
 const ViewContainer = () => {

@@ -1,5 +1,7 @@
 import { CARD_KEYS } from '../constants'
 
+import { getTitleConfig } from '../common/config'
+
 const config = {
   siderConfig: {
     key: CARD_KEYS.BAR,
@@ -9,7 +11,7 @@ const config = {
     description: '柱状图',
   },
 
-  styleConfig: {},
+  styleConfig: [...getTitleConfig()],
 
   dataConfig: {},
 
