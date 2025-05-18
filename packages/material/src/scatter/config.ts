@@ -7,6 +7,7 @@ const config = {
     groupName: '常用图表',
     icon: 'icon-sandiantu',
     description: '散点图',
+    componentName: 'chart',
   },
 
   styleConfig: {},

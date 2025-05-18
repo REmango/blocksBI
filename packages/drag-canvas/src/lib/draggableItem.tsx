@@ -499,6 +499,7 @@ const DraggableItem: React.FC<DraggableItemProps> = (props) => {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       id={id}
+      key={id}
     >
       <div
         className={classNames('draggable-item', {

@@ -11,7 +11,6 @@ function useIconDrag(canvasRef: React.RefObject<HTMLDivElement | null>) {
   const addCard = useDashboardStore((state) => state.addCard)
   const pageList = useDashboardStore((state) => state.pageList)
   const cardMap = useDashboardStore((state) => state.cardMap)
-  console.log(pageList, cardMap)
 
   useEffect(() => {
     let movingNode: HTMLElement | null = null // 拖动中的节点
@@ -84,7 +83,6 @@ function useIconDrag(canvasRef: React.RefObject<HTMLDivElement | null>) {
       //   console.log('dragenter', event?.dragEvent?.target)
       // },
       ondrop: (event) => {
-        console.log('drop', event?.dragEvent?.target, event?.dragEvent?.target.dataset.id)
         addCard(event?.dragEvent?.target.dataset.id, {
           x: nodePositionOnCanvas.x,
           y: nodePositionOnCanvas.y,

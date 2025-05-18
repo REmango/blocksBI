@@ -7,6 +7,7 @@ const config = {
     groupName: '常用图表',
     icon: 'icon-bingzhuangtu',
     description: '饼图',
+    componentName: 'chart',
   },
 
   styleConfig: {},

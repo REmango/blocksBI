@@ -9,6 +9,7 @@ const config = {
     groupName: '常用图表',
     icon: 'icon-tubiao-zhuzhuangtu',
     description: '柱状图',
+    componentName: 'chart',
   },
 
   styleConfig: [...getTitleConfig()],

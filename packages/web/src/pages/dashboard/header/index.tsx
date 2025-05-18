@@ -7,9 +7,11 @@ import {
   CaretRightOutlined,
   SettingOutlined,
 } from '@ant-design/icons'
+import useDashboardStore from '@/store/useDashboardStore'
 
 const Header = () => {
-  const [dashboardName, setDashboardName] = useState<string>('看板标题')
+  const dashboardName = useDashboardStore((state) => state.dashboardName)
+  const setDashboardName = useDashboardStore((state) => state.setDashboardName)
   const [isNameEditing, setIsNameEditing] = useState<boolean>(false)
 
   return (

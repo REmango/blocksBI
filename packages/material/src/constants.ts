@@ -16,4 +16,5 @@ export enum COMPONENT_NAME {
   INPUT = 'input',
   INPUT_NUMBER = 'input-number',
   COLOR_PICKER = 'color-picker',
+  SELECT = 'select',
 }

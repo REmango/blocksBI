@@ -7,6 +7,7 @@ const config = {
     groupName: '混合图表',
     icon: 'icon-chart-line-full',
     description: '柱状图+折线图',
+    componentName: 'chart',
   },
 
   styleConfig: {},
