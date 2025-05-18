@@ -2,9 +2,17 @@ import { useEffect } from 'react'
 import interact from 'interactjs'
 
 import { COMPONENT_ICON_ITEM } from '@/pages/dashboard/constants'
+
+import useDashboardStore from '@/store/useDashboardStore'
+
 const dropItemSelector = `.${COMPONENT_ICON_ITEM}`
 
 function useIconDrag(canvasRef: React.RefObject<HTMLDivElement | null>) {
+  const addCard = useDashboardStore((state) => state.addCard)
+  const pageList = useDashboardStore((state) => state.pageList)
+  const cardMap = useDashboardStore((state) => state.cardMap)
+  console.log(pageList, cardMap)
+
   useEffect(() => {
     let movingNode: HTMLElement | null = null // 拖动中的节点
     let movingOriginal = { x: 0, y: 0 } // 拖动组件原始距离屏幕位置
@@ -77,6 +85,10 @@ function useIconDrag(canvasRef: React.RefObject<HTMLDivElement | null>) {
       // },
       ondrop: (event) => {
         console.log('drop', event?.dragEvent?.target, event?.dragEvent?.target.dataset.id)
+        addCard(event?.dragEvent?.target.dataset.id, {
+          x: nodePositionOnCanvas.x,
+          y: nodePositionOnCanvas.y,
+        })
       },
     })
 

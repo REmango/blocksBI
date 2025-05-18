@@ -9,6 +9,8 @@ export interface CardLayout {
 type PageLayout = CardLayout[]
 
 export interface CardItem<T> {
+  id: string
+  key: string
   props: T
 }
 
@@ -24,4 +26,5 @@ export interface DashboardStore {
   setCurrentPageIndex: (currentPageIndex: number) => void
   setCurrentEditingCardId: (currentEditingCardId: string) => void
   addPage: () => void
+  addCard: (cardKey: string, position: { x: number; y: number }) => void
 }

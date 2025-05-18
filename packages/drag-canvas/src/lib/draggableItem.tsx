@@ -323,7 +323,7 @@ const DraggableItem: React.FC<DraggableItemProps> = (props) => {
     width: width,
     height: height,
     userSelect: 'none',
-    backgroundColor: id === 'item1' ? '#ddd' : '#aaa',
+    backgroundColor: '#fff',
   }
 
   const handleOnMouseDown = (handle: string, event: React.MouseEvent<HTMLDivElement>) => {
