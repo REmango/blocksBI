@@ -22,6 +22,7 @@ export interface CardIMap<T> {
 
 export interface DashboardStore {
   dashboardName: string
+  cardSearchName: string
   setDashboardName: (dashboardName: string) => void
   currentPageIndex: number
   pageList: PageLayout[]
@@ -29,6 +30,7 @@ export interface DashboardStore {
   currentEditingCardId: string
   canvasWidth: number
   canvasHeight: number
+  setCardSearchName: (cardSearchName: string) => void
   setCurrentPageIndex: (currentPageIndex: number) => void
   setCurrentEditingCardId: (currentEditingCardId: string) => void
   addPage: () => void

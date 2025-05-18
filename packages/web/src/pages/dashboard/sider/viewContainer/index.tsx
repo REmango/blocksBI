@@ -7,10 +7,13 @@ import classNames from 'classnames'
 import { COMPONENT_ICON_ITEM } from '@/pages/dashboard/constants'
 
 import { leftMenuConfig, getInitConfig, configMap } from '@block-bi/material'
+import useDashboardStore from '@/store/useDashboardStore'
 
 import Search from '../search'
 
 const ViewContainer = () => {
+  const cardSearchName = useDashboardStore((state) => state.cardSearchName)
+
   const getItems: (panelStyle: CSSProperties) => CollapseProps['items'] = (panelStyle) => {
     const items: CollapseProps['items'] = []
     Object.entries(leftMenuConfig).forEach(([key, value]) => {
@@ -21,20 +24,22 @@ const ViewContainer = () => {
         className: '',
         children: (
           <div className="flex flex-wrap">
-            {value.map((item) => (
-              <div
-                key={item.key}
-                className={classNames('basis-1/3 flex flex-col items-center cursor-pointer ', COMPONENT_ICON_ITEM)}
-                data-id={item.key}
-              >
-                <div className="mb-[4px]">
-                  <div className={classNames('iconfont text-chart text-orange-400', item.icon)}></div>
+            {value
+              .filter((item) => item.name.includes(cardSearchName))
+              .map((item) => (
+                <div
+                  key={item.key}
+                  className={classNames('basis-1/3 flex flex-col items-center cursor-pointer ', COMPONENT_ICON_ITEM)}
+                  data-id={item.key}
+                >
+                  <div className="mb-[4px]">
+                    <div className={classNames('iconfont text-chart text-orange-400', item.icon)}></div>
+                  </div>
+                  <div className="text-[10px] text-center text-orange-400  text-ellipsis overflow-hidden">
+                    {item.name}
+                  </div>
                 </div>
-                <div className="text-[10px] text-center text-orange-400  text-ellipsis overflow-hidden">
-                  {item.name}
-                </div>
-              </div>
-            ))}
+              ))}
           </div>
         ),
       })

@@ -7,12 +7,14 @@ import { restrictToBounds } from '@block-bi/drag-canvas'
 
 const useDashboardStore = create<DashboardStore>((set) => ({
   dashboardName: '看板标题',
+  cardSearchName: '',
   currentPageIndex: 0,
   pageList: [[], []], // 初始为一个空画布
   currentEditingCardId: '',
   cardMap: {}, // 所有的组件
   canvasWidth: 1000,
   canvasHeight: 1400,
+  setCardSearchName: (cardSearchName: string) => set({ cardSearchName }),
   setDashboardName: (dashboardName: string) => set({ dashboardName }),
   setCanvasWidth: (canvasWidth: number) => set({ canvasWidth }),
   setCanvasHeight: (canvasHeight: number) => set({ canvasHeight }),
