@@ -2,8 +2,9 @@ import { Layout } from 'antd'
 import BiHeader from './header'
 import BiSider from './sider'
 import BiContent from './content'
+import BiRightSider from './rightSider'
 
-const { Header, Sider, Content } = Layout
+const { Header, Content } = Layout
 
 // 首页
 const Dashboard = () => {
@@ -21,9 +22,7 @@ const Dashboard = () => {
           <Content className="relative overflow-hidden">
             <BiContent />
           </Content>
-          <Sider width={300} className="sider text-slate-300 	" style={{ background: '#181a1b' }}>
-            hhh
-          </Sider>
+          <BiRightSider />
         </Layout>
       </Layout>
     </Layout>
