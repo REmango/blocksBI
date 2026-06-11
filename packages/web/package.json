@@ -1,0 +1,8 @@
+{
+  "name": "@block-bi/web",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "@block-bi/drag-canvas": "workspace:^0.0.1"    
+  }
+}
