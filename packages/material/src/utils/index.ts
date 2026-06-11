@@ -20,3 +20,5 @@ export function getInitConfig(config: IChartConfig[]) {
   })
   return initConfig
 }
+
+export { buildChartOption } from './buildChartOption'

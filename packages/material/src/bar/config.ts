@@ -1,6 +1,13 @@
+import {
+  getAxisNameConfig,
+  getAxisLegendConfig,
+  getAxisStyleConfig,
+  getAxisTooltipConfig,
+  getTitleConfig,
+  getSeriesConfig,
+} from '../common/config'
 import { CARD_KEYS } from '../constants'
-
-import { getTitleConfig } from '../common/config'
+import barDemoData from '../demoData/bar'
 
 const config = {
   siderConfig: {
@@ -12,9 +19,16 @@ const config = {
     componentName: 'chart',
   },
 
-  styleConfig: [...getTitleConfig()],
+  styleConfig: [
+    ...getTitleConfig(),
+    ...getAxisNameConfig(),
+    ...getAxisStyleConfig(),
+    ...getAxisLegendConfig(),
+    ...getAxisTooltipConfig(),
+    ...getSeriesConfig(CARD_KEYS.BAR),
+  ],
 
-  dataConfig: {},
+  dataConfig: barDemoData,
 
   eventConfig: {},
 }

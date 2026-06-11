@@ -7,6 +7,7 @@ import {
   getSeriesConfig,
 } from '../common/config'
 import { CARD_KEYS } from '../constants'
+import lineDemoData from '../demoData/line'
 
 const config = {
   siderConfig: {
@@ -27,7 +28,7 @@ const config = {
     ...getSeriesConfig(CARD_KEYS.LINE),
   ],
 
-  dataConfig: {},
+  dataConfig: lineDemoData,
 
   eventConfig: {},
 }

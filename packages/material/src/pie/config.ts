@@ -1,4 +1,11 @@
+import {
+  getAxisLegendConfig,
+  getAxisTooltipConfig,
+  getTitleConfig,
+  getSeriesConfig,
+} from '../common/config'
 import { CARD_KEYS } from '../constants'
+import pieDemoData from '../demoData/pie'
 
 const config = {
   siderConfig: {
@@ -10,9 +17,14 @@ const config = {
     componentName: 'chart',
   },
 
-  styleConfig: {},
+  styleConfig: [
+    ...getTitleConfig(),
+    ...getAxisLegendConfig(),
+    ...getAxisTooltipConfig(),
+    ...getSeriesConfig(CARD_KEYS.PIE),
+  ],
 
-  dataConfig: {},
+  dataConfig: pieDemoData,
 
   eventConfig: {},
 }

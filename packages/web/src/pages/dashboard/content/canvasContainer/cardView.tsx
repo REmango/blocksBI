@@ -1,6 +1,6 @@
-import { FC, memo } from 'react'
+import { FC, memo, useMemo } from 'react'
 import { DraggableItem } from '@block-bi/drag-canvas'
-import { componentMap } from '@block-bi/material'
+import { buildChartOption, componentMap } from '@block-bi/material'
 import { CardItem } from '@/types/dashboard'
 
 interface CardViewProps {
@@ -17,6 +17,11 @@ const CardView: FC<CardViewProps> = (props) => {
 
   const componentName = cardConfig.componentName
   const CurrentComponent = componentMap[componentName as keyof typeof componentMap]
+
+  const chartOption = useMemo(
+    () => buildChartOption(cardConfig.key, cardConfig.props?.styleConfig, cardConfig.props?.dataConfig),
+    [cardConfig.key, cardConfig.props?.styleConfig, cardConfig.props?.dataConfig],
+  )
 
   return (
     <DraggableItem
@@ -36,23 +41,7 @@ const CardView: FC<CardViewProps> = (props) => {
           <span className="truncate text-[13px] font-medium leading-none text-slate-700">{cardConfig.name}</span>
         </div>
         <div className="card-view-body relative min-h-0 flex-1 p-2">
-          <CurrentComponent
-            option={{
-              xAxis: {
-                type: 'category',
-                data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-              },
-              yAxis: {
-                type: 'value',
-              },
-              series: [
-                {
-                  data: [150, 230, 224, 218, 135, 147, 260],
-                  type: 'line',
-                },
-              ],
-            }}
-          />
+          <CurrentComponent option={chartOption} />
         </div>
       </div>
     </DraggableItem>
