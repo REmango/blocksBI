@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { Input, Tooltip } from 'antd'
+import { useState } from 'react'
+import { Input, Popover, Tooltip } from 'antd'
 import {
   DashboardOutlined,
   SaveOutlined,
@@ -9,10 +9,13 @@ import {
 } from '@ant-design/icons'
 import useDashboardStore from '@/store/useDashboardStore'
 
+import SettingsPanel from './settingsPanel'
+
 const Header = () => {
   const dashboardName = useDashboardStore((state) => state.dashboardName)
   const setDashboardName = useDashboardStore((state) => state.setDashboardName)
   const [isNameEditing, setIsNameEditing] = useState<boolean>(false)
+  const [settingsOpen, setSettingsOpen] = useState(false)
 
   return (
     <>
@@ -49,9 +52,23 @@ const Header = () => {
           </div>
         </Tooltip>
       </div>
-      <div className="right basis-[300px] flex justify-end text-slate-300 cursor-pointer">
-        <SettingOutlined className="mr-[5px] " />
-        设置
+      <div className="right basis-[300px] flex justify-end items-center text-slate-300">
+        <Popover
+          content={<SettingsPanel />}
+          trigger="click"
+          placement="bottom"
+          open={settingsOpen}
+          onOpenChange={setSettingsOpen}
+          overlayClassName="dashboard-settings-popover"
+          arrow={{ pointAtCenter: true }}
+          align={{ offset: [0, 6] }}
+          getPopupContainer={() => document.body}
+        >
+          <div className="flex items-center cursor-pointer hover:text-slate-100">
+            <SettingOutlined className="mr-[5px]" />
+            设置
+          </div>
+        </Popover>
       </div>
     </>
   )

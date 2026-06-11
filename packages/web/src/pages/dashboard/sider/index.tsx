@@ -2,6 +2,7 @@ import { Layout, Tabs } from 'antd'
 import type { TabsProps } from 'antd'
 
 import ViewContainer from './viewContainer'
+import LayerContainer from './layerContainer'
 
 const { Sider } = Layout
 
@@ -15,7 +16,7 @@ const BiSider = () => {
     {
       key: '2',
       label: '图层',
-      children: 'Content of Tab Pane 2',
+      children: <LayerContainer />,
     },
     {
       key: '3',

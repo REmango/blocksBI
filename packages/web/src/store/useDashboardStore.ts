@@ -21,6 +21,10 @@ const useDashboardStore = create<DashboardStore>((set) => ({
   setCurrentPageIndex: (currentPageIndex: number) => set({ currentPageIndex }),
   setCurrentEditingCardId: (currentEditingCardId: string) => set({ currentEditingCardId }),
   addPage: () => set((state) => ({ pageList: [...state.pageList, []] })),
+  setCurrentPageLayout: (layout: CardLayout[]) =>
+    set((state) => ({
+      pageList: state.pageList.map((page, index) => (index === state.currentPageIndex ? layout : page)),
+    })),
   addCard: (cardKey: string, position: { x: number; y: number }) => {
     return set((state) => {
       const cardId = generateId()
@@ -42,18 +46,26 @@ const useDashboardStore = create<DashboardStore>((set) => ({
         height: cardConfig.height,
       }
 
-      const currentPage = state.pageList[state.currentPageIndex]
+      const currentPageIndex = state.currentPageIndex
+      const currentPage = state.pageList[currentPageIndex]
       const len = currentPage.length
-      currentPage.push(layoutInitialValue)
-      const newCardMap = { ...state.cardMap }
-      newCardMap[cardId] = {
-        id: cardId,
-        key: cardKey,
-        componentName,
-        name: title + `(${len + 1})`,
-        props: defaultConfig,
+
+      const newPageList = state.pageList.map((page, index) =>
+        index === currentPageIndex ? [...page, layoutInitialValue] : page,
+      )
+
+      const newCardMap = {
+        ...state.cardMap,
+        [cardId]: {
+          id: cardId,
+          key: cardKey,
+          componentName,
+          name: title + `(${len + 1})`,
+          props: defaultConfig,
+        },
       }
-      return { cardMap: newCardMap, pageList: state.pageList }
+
+      return { cardMap: newCardMap, pageList: newPageList }
     })
   },
 }))

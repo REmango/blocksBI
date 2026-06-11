@@ -88,3 +88,48 @@
     flex: 1;
   }
 }
+
+.dashboard-settings-popover {
+  .ant-popover-inner {
+    background: #1e2122;
+    padding: 14px 16px;
+    border: 1px solid #334155;
+  }
+
+  .ant-popover-arrow::before {
+    background: #1e2122;
+  }
+
+  .dashboard-settings-panel {
+    .ant-input-number {
+      background: #181a1b;
+      border-color: #475569;
+      color: #e5e7eb;
+    }
+
+    .ant-input-number-input {
+      color: #e5e7eb;
+    }
+
+    .ant-input-number-handler-wrap {
+      background: #181a1b;
+      border-color: #475569;
+    }
+
+    .ant-input-number-handler {
+      border-color: #475569;
+      color: #94a3b8;
+    }
+
+    .ant-btn-default {
+      background: #181a1b;
+      border-color: #475569;
+      color: #94a3b8;
+    }
+
+    .ant-btn-default:hover {
+      color: #e5e7eb;
+      border-color: #64748b;
+    }
+  }
+}
