@@ -9,7 +9,7 @@ const VIEW_FOOTER_HEIGHT = 36
 
 const Content = () => {
   return (
-    <div className="relative flex h-full min-h-0 flex-col">
+    <div className="relative flex h-full min-h-0 flex-col" style={{ width: '100%' }}>
       <div
         className="flex h-[60px] shrink-0 items-center justify-center text-white"
         style={{ background: '#282c34' }}
@@ -21,7 +21,9 @@ const Content = () => {
         style={{ background: '#282c34', paddingBottom: VIEW_FOOTER_HEIGHT }}
         id={CANVAS_PARENT_ID}
       >
-        <CanvasContainer />
+        <div>
+          <CanvasContainer />
+        </div>
       </div>
       <ViewFooter />
     </div>
