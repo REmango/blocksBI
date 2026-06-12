@@ -26,7 +26,9 @@ const MobileCanvasContainer = () => {
   const hiddenCardIdsByPage = useDashboardStore((state) => state.hiddenCardIdsByPage)
   const hiddenCardIds = hiddenCardIdsByPage[currentPageIndex] ?? []
 
-  const visiblePageCards = currentPage.filter((item) => !hiddenCardIds.includes(item.id))
+  const visiblePageCards = currentPage.filter(
+    (item) => !hiddenCardIds.includes(item.id) && cardMap[item.id],
+  )
   const contentWidth = canvasWidth - MOBILE_CANVAS_PADDING_X * 2
 
   const contentHeight = useMemo(() => {

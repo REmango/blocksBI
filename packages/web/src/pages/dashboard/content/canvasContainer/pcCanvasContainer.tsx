@@ -26,7 +26,9 @@ const PcCanvasContainer = () => {
   const hiddenCardIdsByPage = useDashboardStore((state) => state.hiddenCardIdsByPage)
   const hiddenCardIds = hiddenCardIdsByPage[currentPageIndex] ?? []
 
-  const visiblePageCards = currentPage.filter((item) => !hiddenCardIds.includes(item.id))
+  const visiblePageCards = currentPage.filter(
+    (item) => !hiddenCardIds.includes(item.id) && cardMap[item.id],
+  )
 
   const handleLayoutChange = useCallback(
     (cardId: string, layout: { x: number; y: number; width: number; height: number }) => {

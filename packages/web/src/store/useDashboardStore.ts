@@ -22,23 +22,33 @@ import {
 import { DEFAULT_PUSH_CONFIG } from '@/pages/dashboard/constants/pushConfig'
 import { restrictToBounds } from '@block-bi/drag-canvas'
 
-const useDashboardStore = create<DashboardStore>((set) => ({
+import { loadDashboardState } from './dashboardStorage'
+
+const persistedState =
+  typeof window !== 'undefined' ? loadDashboardState() ?? {} : {}
+
+const defaultDashboardState = {
   dashboardName: '看板标题',
-  cardSearchName: '',
   currentPageIndex: 0,
-  pageList: [[], []], // 初始为一个空画布
+  pageList: [[], []] as CardLayout[][],
   pageNames: ['画布1', '画布2'],
-  currentEditingCardId: '',
-  cardMap: {}, // 所有的组件
+  cardMap: {},
   canvasWidth: 1000,
   canvasHeight: 1400,
-  viewMode: 'pc',
+  viewMode: 'pc' as ViewMode,
   mobileDeviceId: DEFAULT_IPHONE_MODEL_ID,
   savedPcCanvasWidth: 1000,
   savedPcCanvasHeight: 1400,
   pushConfig: DEFAULT_PUSH_CONFIG,
   advancedConfig: DEFAULT_ADVANCED_CONFIG,
   hiddenCardIdsByPage: {},
+}
+
+const useDashboardStore = create<DashboardStore>((set) => ({
+  ...defaultDashboardState,
+  ...persistedState,
+  cardSearchName: '',
+  currentEditingCardId: '',
   setCardSearchName: (cardSearchName: string) => set({ cardSearchName }),
   setDashboardName: (dashboardName: string) => set({ dashboardName }),
   setCanvasWidth: (canvasWidth: number) =>

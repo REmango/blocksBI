@@ -43,6 +43,23 @@ export interface AdvancedConfigState {
   nullValueHandling: NullValueHandling
 }
 
+export interface DashboardPersistedState {
+  dashboardName: string
+  currentPageIndex: number
+  pageList: PageLayout[]
+  pageNames: string[]
+  cardMap: CardIMap<any>
+  canvasWidth: number
+  canvasHeight: number
+  viewMode: ViewMode
+  mobileDeviceId: string
+  savedPcCanvasWidth: number
+  savedPcCanvasHeight: number
+  pushConfig: PushConfigState
+  advancedConfig: AdvancedConfigState
+  hiddenCardIdsByPage: Record<number, string[]>
+}
+
 export interface PushConfigState {
   pushName: string
   receiveMembers: string[]

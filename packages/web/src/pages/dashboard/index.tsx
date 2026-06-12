@@ -1,4 +1,11 @@
+import { useEffect } from 'react'
 import { Layout } from 'antd'
+
+import {
+  startDashboardPersistenceSync,
+  stopDashboardPersistenceSync,
+} from '@/store/dashboardPersistence'
+
 import BiHeader from './header'
 import BiSider from './sider'
 import BiContent from './content'
@@ -9,6 +16,11 @@ const { Header, Content } = Layout
 
 // 首页
 const Dashboard = () => {
+  useEffect(() => {
+    startDashboardPersistenceSync()
+    return () => stopDashboardPersistenceSync()
+  }, [])
+
   return (
     <Layout className="h-screen  overflow-hidden">
       <Header
