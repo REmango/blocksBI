@@ -16,9 +16,9 @@ const Dashboard = () => {
       >
         <BiHeader />
       </Header>
-      <Layout>
+      <Layout className="min-h-0 flex-1">
         <BiSider />
-        <Layout>
+        <Layout className="min-h-0">
           <Content className="relative overflow-hidden">
             <BiContent />
           </Content>

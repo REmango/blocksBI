@@ -7,7 +7,7 @@ const defaultItems: IChartConfig[] = [
   {
     key: 'title.show',
     label: '显示',
-    groupName: '标题',
+    groupName: '图表标题',
     componentName: COMPONENT_NAME.SWITCH,
     col: 24,
     layout: 'horizontal',

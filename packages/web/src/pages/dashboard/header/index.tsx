@@ -19,7 +19,7 @@ const Header = () => {
 
   return (
     <>
-      <div className="left text-blue-500 font-semibold basis-[400px] ">
+      <div className="left text-blue-500 font-semibold basis-[250px] ">
         {isNameEditing ? (
           <Input
             value={dashboardName}
@@ -52,7 +52,7 @@ const Header = () => {
           </div>
         </Tooltip>
       </div>
-      <div className="right basis-[300px] flex justify-end items-center text-slate-300">
+      <div className="right basis-[280px] flex justify-end items-center text-slate-300">
         <Popover
           content={<SettingsPanel />}
           trigger="click"

@@ -1,8 +1,16 @@
 import { create } from 'zustand'
 
-import { DashboardStore, CardLayout } from '@/types/dashboard'
+import {
+  AdvancedConfigState,
+  DashboardStore,
+  CardLayout,
+  PushConfigState,
+  ViewMode,
+} from '@/types/dashboard'
 import { generateId, getCardDefaultConfig } from '@/utils'
 import { CARD_DEFAULT_LAYOUT } from '@/pages/dashboard/constants'
+import { DEFAULT_ADVANCED_CONFIG } from '@/pages/dashboard/constants/advancedConfig'
+import { DEFAULT_PUSH_CONFIG } from '@/pages/dashboard/constants/pushConfig'
 import { restrictToBounds } from '@block-bi/drag-canvas'
 
 const useDashboardStore = create<DashboardStore>((set) => ({
@@ -14,10 +22,15 @@ const useDashboardStore = create<DashboardStore>((set) => ({
   cardMap: {}, // 所有的组件
   canvasWidth: 1000,
   canvasHeight: 1400,
+  viewMode: 'pc',
+  pushConfig: DEFAULT_PUSH_CONFIG,
+  advancedConfig: DEFAULT_ADVANCED_CONFIG,
+  hiddenCardIdsByPage: {},
   setCardSearchName: (cardSearchName: string) => set({ cardSearchName }),
   setDashboardName: (dashboardName: string) => set({ dashboardName }),
   setCanvasWidth: (canvasWidth: number) => set({ canvasWidth }),
   setCanvasHeight: (canvasHeight: number) => set({ canvasHeight }),
+  setViewMode: (viewMode: ViewMode) => set({ viewMode }),
   setCurrentPageIndex: (currentPageIndex: number) => set({ currentPageIndex }),
   setCurrentEditingCardId: (currentEditingCardId: string) => set({ currentEditingCardId }),
   addPage: () => set((state) => ({ pageList: [...state.pageList, []] })),
@@ -61,6 +74,7 @@ const useDashboardStore = create<DashboardStore>((set) => ({
           key: cardKey,
           componentName,
           name: title + `(${len + 1})`,
+          showCardTitle: true,
           props: defaultConfig,
         },
       }
@@ -68,6 +82,79 @@ const useDashboardStore = create<DashboardStore>((set) => ({
       return { cardMap: newCardMap, pageList: newPageList }
     })
   },
+  setCardName: (cardId: string, name: string) =>
+    set((state) => {
+      const card = state.cardMap[cardId]
+      if (!card) return state
+
+      return {
+        cardMap: {
+          ...state.cardMap,
+          [cardId]: {
+            ...card,
+            name,
+          },
+        },
+      }
+    }),
+  setCardShowTitle: (cardId: string, showCardTitle: boolean) =>
+    set((state) => {
+      const card = state.cardMap[cardId]
+      if (!card) return state
+
+      return {
+        cardMap: {
+          ...state.cardMap,
+          [cardId]: {
+            ...card,
+            showCardTitle,
+          },
+        },
+      }
+    }),
+  updatePushConfig: (patch: Partial<PushConfigState>) =>
+    set((state) => ({
+      pushConfig: {
+        ...state.pushConfig,
+        ...patch,
+      },
+    })),
+  setPageHiddenCardIds: (pageIndex: number, cardIds: string[]) =>
+    set((state) => ({
+      hiddenCardIdsByPage: {
+        ...state.hiddenCardIdsByPage,
+        [pageIndex]: cardIds,
+      },
+    })),
+  updateAdvancedConfig: (patch: Partial<AdvancedConfigState>) =>
+    set((state) => ({
+      advancedConfig: {
+        ...state.advancedConfig,
+        ...patch,
+      },
+    })),
+  updateCardStyleValue: (cardId: string, key: string, value: unknown) =>
+    set((state) => {
+      const card = state.cardMap[cardId]
+      if (!card?.props?.styleConfig) return state
+
+      const styleConfig = card.props.styleConfig.map((item: { key: string; defaultValue: unknown }) =>
+        item.key === key ? { ...item, defaultValue: value } : item,
+      )
+
+      return {
+        cardMap: {
+          ...state.cardMap,
+          [cardId]: {
+            ...card,
+            props: {
+              ...card.props,
+              styleConfig,
+            },
+          },
+        },
+      }
+    }),
 }))
 
 export default useDashboardStore

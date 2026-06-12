@@ -3,7 +3,7 @@ export const CANVAS_PARENT_ID = 'CANVAS_PARENT_ID'
 
 export const CARD_DEFAULT_LAYOUT = {
   chart: {
-    width: 300,
-    height: 250,
+    width: 360,
+    height: 300,
   },
 }
