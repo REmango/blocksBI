@@ -1,82 +1,51 @@
 # BlocksBI
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+基于 Nx Monorepo 的可视化 BI 看板搭建平台。从侧栏拖入图表与布局容器，在画布上自由排版，通过右侧配置面板调整样式与数据，支持 PC / 移动端预览与本地持久化。
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is almost ready ✨.
+## 技术栈
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/getting-started/tutorials/react-monorepo-tutorial?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+React 18 · TypeScript · Vite · Nx · Ant Design · Tailwind · ECharts · Zustand · @dnd-kit · interact.js
 
-## Finish your remote caching setup
+## 子包
 
-[Click here to finish setting up your workspace!](https://cloud.nx.app/connect/KBltIC2lBY)
+| 包 | 说明 |
+|---|---|
+| `packages/web` | 看板编辑器主应用 |
+| `packages/material` | 图表物料库（配置 schema、ECharts 渲染、demo 数据） |
+| `packages/drag-canvas` | 可拖拽画布（移动、缩放、多选、吸附） |
 
+路径别名：`@block-bi/*` → `packages/*/src/index.ts`
 
-## Run tasks
+## 启动
 
-To run the dev server for your app, use:
-
-```sh
-npx nx serve web
+```bash
+pnpm install
+pnpm start          # nx serve web，默认 http://localhost:4200
+npx nx build web    # 生产构建
 ```
 
-To create a production bundle:
+## 功能概览
 
-```sh
-npx nx build web
+- **画布**：多页签、网格背景、图表拖拽与缩放、布局容器（三列 / 四列）
+- **侧栏**：图表组件、布局模板、图层管理、搜索
+- **配置**：图表样式 / 数据、卡片标题、高级设置（画布尺寸、移动端机型）、推送配置
+- **视图**：PC / 移动端切换，移动端纵向堆叠预览
+- **持久化**：看板状态写入 `localStorage`（按页面路径），刷新后恢复
+
+## 目录
+
+```
+blocksBI/
+├── packages/web/          # 主应用
+├── packages/material/     # 图表物料
+├── packages/drag-canvas/  # 拖拽画布
+├── doc/                   # 详细文档（见 doc/代码结构解读.md）
+└── package.json
 ```
 
-To see all available targets to run for a project, run:
+## 路由
 
-```sh
-npx nx show project web
-```
-
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
-
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Add new projects
-
-While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
-
-Use the plugin's generator to create new projects.
-
-To generate a new application, use:
-
-```sh
-npx nx g @nx/react:app demo
-```
-
-To generate a new library, use:
-
-```sh
-npx nx g @nx/react:lib mylib
-```
-
-You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx list <plugin-name>` to learn about more specific capabilities of a particular plugin. Alternatively, [install Nx Console](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) to browse plugins and generators in your IDE.
-
-[Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Install Nx Console
-
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
-
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Useful links
-
-Learn more:
-
-- [Learn more about this workspace setup](https://nx.dev/getting-started/tutorials/react-monorepo-tutorial?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+| 路径 | 页面 |
+|---|---|
+| `/` | 看板编辑器 |
+| `/dndKit` | dnd-kit 调试页 |
