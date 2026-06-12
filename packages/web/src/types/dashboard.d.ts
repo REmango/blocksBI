@@ -66,7 +66,11 @@ export interface DashboardStore {
   canvasWidth: number
   canvasHeight: number
   viewMode: ViewMode
+  mobileDeviceId: string
+  savedPcCanvasWidth: number
+  savedPcCanvasHeight: number
   setViewMode: (viewMode: ViewMode) => void
+  setMobileDeviceId: (mobileDeviceId: string) => void
   setCardSearchName: (cardSearchName: string) => void
   setCurrentPageIndex: (currentPageIndex: number) => void
   setCurrentEditingCardId: (currentEditingCardId: string) => void

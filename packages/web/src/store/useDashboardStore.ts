@@ -10,6 +10,10 @@ import {
 import { generateId, getCardDefaultConfig } from '@/utils'
 import { CARD_DEFAULT_LAYOUT } from '@/pages/dashboard/constants'
 import { DEFAULT_ADVANCED_CONFIG } from '@/pages/dashboard/constants/advancedConfig'
+import {
+  DEFAULT_IPHONE_MODEL_ID,
+  getIphoneModel,
+} from '@/pages/dashboard/constants/iphoneModels'
 import { DEFAULT_PUSH_CONFIG } from '@/pages/dashboard/constants/pushConfig'
 import { restrictToBounds } from '@block-bi/drag-canvas'
 
@@ -23,14 +27,58 @@ const useDashboardStore = create<DashboardStore>((set) => ({
   canvasWidth: 1000,
   canvasHeight: 1400,
   viewMode: 'pc',
+  mobileDeviceId: DEFAULT_IPHONE_MODEL_ID,
+  savedPcCanvasWidth: 1000,
+  savedPcCanvasHeight: 1400,
   pushConfig: DEFAULT_PUSH_CONFIG,
   advancedConfig: DEFAULT_ADVANCED_CONFIG,
   hiddenCardIdsByPage: {},
   setCardSearchName: (cardSearchName: string) => set({ cardSearchName }),
   setDashboardName: (dashboardName: string) => set({ dashboardName }),
-  setCanvasWidth: (canvasWidth: number) => set({ canvasWidth }),
-  setCanvasHeight: (canvasHeight: number) => set({ canvasHeight }),
-  setViewMode: (viewMode: ViewMode) => set({ viewMode }),
+  setCanvasWidth: (canvasWidth: number) =>
+    set((state) =>
+      state.viewMode === 'pc'
+        ? { canvasWidth, savedPcCanvasWidth: canvasWidth }
+        : { canvasWidth },
+    ),
+  setCanvasHeight: (canvasHeight: number) =>
+    set((state) =>
+      state.viewMode === 'pc'
+        ? { canvasHeight, savedPcCanvasHeight: canvasHeight }
+        : { canvasHeight },
+    ),
+  setViewMode: (viewMode: ViewMode) =>
+    set((state) => {
+      if (viewMode === 'mobile') {
+        const device = getIphoneModel(state.mobileDeviceId)
+        return {
+          viewMode,
+          savedPcCanvasWidth: state.canvasWidth,
+          savedPcCanvasHeight: state.canvasHeight,
+          canvasWidth: device.width,
+          canvasHeight: device.height,
+        }
+      }
+
+      return {
+        viewMode,
+        canvasWidth: state.savedPcCanvasWidth,
+        canvasHeight: state.savedPcCanvasHeight,
+      }
+    }),
+  setMobileDeviceId: (mobileDeviceId: string) =>
+    set((state) => {
+      const device = getIphoneModel(mobileDeviceId)
+      if (state.viewMode !== 'mobile') {
+        return { mobileDeviceId }
+      }
+
+      return {
+        mobileDeviceId,
+        canvasWidth: device.width,
+        canvasHeight: device.height,
+      }
+    }),
   setCurrentPageIndex: (currentPageIndex: number) => set({ currentPageIndex }),
   setCurrentEditingCardId: (currentEditingCardId: string) => set({ currentEditingCardId }),
   addPage: () => set((state) => ({ pageList: [...state.pageList, []] })),
