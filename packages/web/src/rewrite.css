@@ -434,20 +434,17 @@
   }
 }
 
-/* Overlap card right edge + gap + toolbar column so hover never drops in the 6px gap. */
 .card-toolbar-hover-zone {
   position: absolute;
   top: 0;
-  left: calc(100% - 8px);
+  left: calc(100% + 6px);
   z-index: 20;
-  width: 54px;
-  height: 100%;
+  pointer-events: none;
 }
 
 .card-container-wrapper .card-floating-actions {
-  position: absolute;
+  position: relative;
   top: 0;
-  left: 14px;
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -467,6 +464,17 @@
 .card-container-wrapper .card-floating-actions.is-visible {
   opacity: 1;
   visibility: visible;
+  pointer-events: auto;
+}
+
+/* Bridge card edge and 6px gap so hover is not lost when moving to toolbar. */
+.card-container-wrapper .card-floating-actions.is-visible::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 100%;
+  width: 14px;
+  height: 100%;
   pointer-events: auto;
 }
 

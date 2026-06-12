@@ -1,4 +1,4 @@
-import { ReactNode, useRef, useState } from 'react'
+import { MouseEvent, ReactNode, useRef, useState } from 'react'
 
 import CardFloatingActions from './CardFloatingActions'
 
@@ -9,6 +9,7 @@ interface CardContainerWrapperProps {
 const TOOLBAR_HIDE_DELAY_MS = 120
 
 const CardContainerWrapper = ({ children }: CardContainerWrapperProps) => {
+  const wrapperRef = useRef<HTMLDivElement>(null)
   const [toolbarVisible, setToolbarVisible] = useState(false)
   const hideTimerRef = useRef<ReturnType<typeof setTimeout>>()
 
@@ -30,18 +31,22 @@ const CardContainerWrapper = ({ children }: CardContainerWrapperProps) => {
     }, TOOLBAR_HIDE_DELAY_MS)
   }
 
+  const handleMouseLeave = (event: MouseEvent<HTMLDivElement>) => {
+    const relatedTarget = event.relatedTarget as Node | null
+    if (relatedTarget && wrapperRef.current?.contains(relatedTarget)) {
+      return
+    }
+    scheduleHideToolbar()
+  }
+
   return (
     <div
+      ref={wrapperRef}
       className="card-container-wrapper relative h-full w-full overflow-visible"
       onMouseEnter={showToolbar}
-      onMouseLeave={scheduleHideToolbar}
+      onMouseLeave={handleMouseLeave}
     >
-      <div
-        className="card-toolbar-hover-zone"
-        style={{ pointerEvents: toolbarVisible ? 'auto' : 'none' }}
-        onMouseEnter={showToolbar}
-        onMouseLeave={scheduleHideToolbar}
-      >
+      <div className="card-toolbar-hover-zone">
         <CardFloatingActions visible={toolbarVisible} />
       </div>
       {children}
