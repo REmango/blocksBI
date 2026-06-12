@@ -13,6 +13,9 @@ interface DraggableItemProps {
   snapTolerance?: number
   children?: React.ReactNode
   initialSize?: { width: number; height: number }
+  enabledHandles?: string[]
+  lockX?: number
+  transparentBackground?: boolean
   notifyItemLayoutChange?: (layout: { x: number; y: number; width: number; height: number }) => void
 }
 

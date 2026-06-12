@@ -22,6 +22,9 @@ const DraggableItem: React.FC<DraggableItemProps> = (props) => {
     children,
     notifyItemLayoutChange,
     initialSize,
+    enabledHandles,
+    lockX,
+    transparentBackground,
   } = props
 
   const { store, dispatch } = useContext(CanvasContext)
@@ -29,10 +32,20 @@ const DraggableItem: React.FC<DraggableItemProps> = (props) => {
   const [isInSelectedArea, setIsInSelectedArea] = useState(false)
 
   const storeRef = useRef(store)
+  const lockXRef = useRef(lockX)
+  const notifyLayoutChangeRef = useRef(notifyItemLayoutChange)
 
   useEffect(() => {
     storeRef.current = store
   }, [store])
+
+  useEffect(() => {
+    lockXRef.current = lockX
+  }, [lockX])
+
+  useEffect(() => {
+    notifyLayoutChangeRef.current = notifyItemLayoutChange
+  }, [notifyItemLayoutChange])
 
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id,
@@ -41,7 +54,10 @@ const DraggableItem: React.FC<DraggableItemProps> = (props) => {
 
   const [width, setWidth] = useState(initialSize?.width ?? 200)
   const [height, setHeight] = useState(initialSize?.height ?? 200)
-  const [position, setPosition] = useState(initialPosition || { x: 0, y: 0 })
+  const [position, setPosition] = useState({
+    x: lockX ?? initialPosition?.x ?? 0,
+    y: initialPosition?.y ?? 0,
+  })
   const [isMouseEnter, setIsMouseEnter] = useState(false)
 
   const transformRef = useRef<Transform>(null)
@@ -229,10 +245,10 @@ const DraggableItem: React.FC<DraggableItemProps> = (props) => {
     eventBus.emit(`snapLine`, refLine)
   }
 
-  // 通知外层事件更新布局
+  // 通知外层更新布局（回调放 ref，避免父组件每次渲染触发无限更新）
   useEffect(() => {
-    notifyItemLayoutChange?.({ x: position.x, y: position.y, width, height })
-  }, [position, width, height, notifyItemLayoutChange])
+    notifyLayoutChangeRef.current?.({ x: position.x, y: position.y, width, height })
+  }, [position, width, height])
 
   useEffect(() => {
     if (transform !== null) {
@@ -261,12 +277,17 @@ const DraggableItem: React.FC<DraggableItemProps> = (props) => {
         // 将transformRef.current重置
         transformRef.current = null
         return {
-          x: prevPositions.x + round(tmp?.x ?? 0),
+          x: lockXRef.current ?? prevPositions.x + round(tmp?.x ?? 0),
           y: prevPositions.y + round(tmp?.y ?? 0),
         }
       })
 
-      notifyItemLayoutChange?.({ x: position.x, y: position.y, width, height })
+      notifyLayoutChangeRef.current?.({
+        x: lockXRef.current ?? position.x,
+        y: position.y,
+        width,
+        height,
+      })
     }
     eventBus.on(`${id}-dragEnd`, cb)
 
@@ -323,8 +344,12 @@ const DraggableItem: React.FC<DraggableItemProps> = (props) => {
     width: width,
     height: height,
     userSelect: 'none',
-    backgroundColor: '#fff',
+    backgroundColor: transparentBackground ? 'transparent' : '#fff',
   }
+
+  const visibleHandles = enabledHandles
+    ? handles.filter((handle) => enabledHandles.includes(handle))
+    : handles
 
   const handleOnMouseDown = (handle: string, event: React.MouseEvent<HTMLDivElement>) => {
     const { canvasWidth, canvasHeight } = storeRef.current
@@ -395,7 +420,7 @@ const DraggableItem: React.FC<DraggableItemProps> = (props) => {
     setHeight(newHeight)
 
     setPosition({
-      x: left,
+      x: lockXRef.current ?? left,
       y: top,
     })
   }
@@ -507,7 +532,7 @@ const DraggableItem: React.FC<DraggableItemProps> = (props) => {
         })}
         onMouseDown={handleMouseClick}
       >
-        {handles.map((handle) => (
+        {visibleHandles.map((handle) => (
           <div
             key={handle}
             className={classNames('handle', `handle-${handle}`, {

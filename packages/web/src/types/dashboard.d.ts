@@ -76,6 +76,8 @@ export interface DashboardStore {
   setCurrentEditingCardId: (currentEditingCardId: string) => void
   addPage: () => void
   addCard: (cardKey: string, position: { x: number; y: number }) => void
+  addLayoutContainer: (layoutKey: string, position: { x: number; y: number }) => void
+  updateCardLayout: (cardId: string, layout: Partial<CardLayout>) => void
   setCurrentPageLayout: (layout: CardLayout[]) => void
   setCanvasWidth: (canvasWidth: number) => void
   setCanvasHeight: (canvasHeight: number) => void

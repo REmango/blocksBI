@@ -8,7 +8,12 @@ import {
   ViewMode,
 } from '@/types/dashboard'
 import { generateId, getCardDefaultConfig } from '@/utils'
-import { CARD_DEFAULT_LAYOUT } from '@/pages/dashboard/constants'
+import { CARD_DEFAULT_LAYOUT, LAYOUT_CONTAINER_COMPONENT_NAME } from '@/pages/dashboard/constants'
+import {
+  LAYOUT_CONTAINER_MAP,
+  LAYOUT_CONTAINER_MIN_HEIGHT,
+  LayoutContainerKey,
+} from '@/pages/dashboard/constants/layoutContainer'
 import { DEFAULT_ADVANCED_CONFIG } from '@/pages/dashboard/constants/advancedConfig'
 import {
   DEFAULT_IPHONE_MODEL_ID,
@@ -130,6 +135,89 @@ const useDashboardStore = create<DashboardStore>((set) => ({
       return { cardMap: newCardMap, pageList: newPageList }
     })
   },
+  addLayoutContainer: (layoutKey: string, position: { x: number; y: number }) =>
+    set((state) => {
+      if (state.viewMode !== 'pc') return state
+
+      const meta = LAYOUT_CONTAINER_MAP[layoutKey as LayoutContainerKey]
+      if (!meta) return state
+
+      const cardId = generateId()
+      const canvasWidth = state.canvasWidth
+      const canvasHeight = state.canvasHeight
+      const height = meta.defaultHeight
+      const y = restrictToBounds(Math.round(position.y), 0, canvasHeight - height)
+
+      const layoutInitialValue: CardLayout = {
+        id: cardId,
+        x: 0,
+        y,
+        width: canvasWidth,
+        height,
+      }
+
+      const currentPageIndex = state.currentPageIndex
+      const currentPage = state.pageList[currentPageIndex]
+      const len = currentPage.length
+
+      const newPageList = state.pageList.map((page, index) =>
+        index === currentPageIndex ? [...page, layoutInitialValue] : page,
+      )
+
+      const newCardMap = {
+        ...state.cardMap,
+        [cardId]: {
+          id: cardId,
+          key: meta.key,
+          componentName: LAYOUT_CONTAINER_COMPONENT_NAME,
+          name: `${meta.label}(${len + 1})`,
+          showCardTitle: false,
+          props: {
+            columns: meta.columns,
+            layoutKey: meta.key,
+          },
+        },
+      }
+
+      return { cardMap: newCardMap, pageList: newPageList }
+    }),
+  updateCardLayout: (cardId: string, layout: Partial<CardLayout>) =>
+    set((state) => {
+      const currentPageIndex = state.currentPageIndex
+      const currentPage = state.pageList[currentPageIndex]
+      const cardIndex = currentPage.findIndex((item) => item.id === cardId)
+      if (cardIndex < 0) return state
+
+      const card = state.cardMap[cardId]
+      const isLayoutContainer = card?.componentName === LAYOUT_CONTAINER_COMPONENT_NAME
+      const canvasWidth = state.canvasWidth
+
+      const currentLayout = currentPage[cardIndex]
+      const nextLayout = { ...currentLayout, ...layout }
+      if (isLayoutContainer) {
+        nextLayout.x = 0
+        nextLayout.width = canvasWidth
+      }
+
+      if (
+        nextLayout.x === currentLayout.x &&
+        nextLayout.y === currentLayout.y &&
+        nextLayout.width === currentLayout.width &&
+        nextLayout.height === currentLayout.height
+      ) {
+        return state
+      }
+
+      const newPage = currentPage.map((item, index) =>
+        index === cardIndex ? nextLayout : item,
+      )
+
+      return {
+        pageList: state.pageList.map((page, index) =>
+          index === currentPageIndex ? newPage : page,
+        ),
+      }
+    }),
   setCardName: (cardId: string, name: string) =>
     set((state) => {
       const card = state.cardMap[cardId]

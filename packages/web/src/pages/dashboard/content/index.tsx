@@ -3,6 +3,8 @@ import ViewModeToggle from './ViewModeToggle'
 
 import { CANVAS_PARENT_ID } from '../constants'
 
+import LayoutCanvasDropZone from '../layoutDrag/LayoutCanvasDropZone'
+
 import CanvasContainer from './canvasContainer'
 
 const VIEW_FOOTER_HEIGHT = 36
@@ -21,9 +23,9 @@ const Content = () => {
         style={{ background: '#282c34', paddingBottom: VIEW_FOOTER_HEIGHT }}
         id={CANVAS_PARENT_ID}
       >
-        <div>
+        <LayoutCanvasDropZone>
           <CanvasContainer />
-        </div>
+        </LayoutCanvasDropZone>
       </div>
       <ViewFooter />
     </div>

@@ -2,6 +2,7 @@ import { memo, useMemo } from 'react'
 
 import {
   CHART_COMPONENT_NAME,
+  LAYOUT_CONTAINER_COMPONENT_NAME,
   MOBILE_CANVAS_PADDING_X,
   MOBILE_CANVAS_PADDING_Y,
   MOBILE_CARD_GAP,
@@ -9,8 +10,10 @@ import {
 import useDashboardStore from '@/store/useDashboardStore'
 
 import CardContent from './cardContent'
+import LayoutContainerView from './layoutContainerView'
 
-const isChartCard = (componentName?: string) => componentName === CHART_COMPONENT_NAME
+const isFullWidthCard = (componentName?: string) =>
+  componentName === CHART_COMPONENT_NAME || componentName === LAYOUT_CONTAINER_COMPONENT_NAME
 
 const MobileCanvasContainer = () => {
   const setCurrentEditingCardId = useDashboardStore((state) => state.setCurrentEditingCardId)
@@ -58,22 +61,33 @@ const MobileCanvasContainer = () => {
       <div className="mobile-canvas flex flex-col" style={{ gap: MOBILE_CARD_GAP }}>
         {visiblePageCards.map((item) => {
           const cardConfig = cardMap[item.id]
-          const isChart = isChartCard(cardConfig?.componentName)
-          const cardWidth = isChart ? contentWidth : item.width
+          const isLayoutContainer = cardConfig?.componentName === LAYOUT_CONTAINER_COMPONENT_NAME
+          const isFullWidth = isFullWidthCard(cardConfig?.componentName)
+          const cardWidth = isFullWidth ? contentWidth : item.width
 
           return (
             <div
               key={item.id}
-              className={isChart ? 'w-full' : 'flex justify-center'}
+              className={isFullWidth ? 'w-full' : 'flex justify-center'}
               onMouseDown={(e) => e.stopPropagation()}
             >
-              <CardContent
-                id={item.id}
-                width={cardWidth}
-                height={item.height}
-                cardConfig={cardConfig}
-                onSelect={setCurrentEditingCardId}
-              />
+              {isLayoutContainer ? (
+                <div style={{ width: cardWidth, height: item.height }}>
+                  <LayoutContainerView
+                    id={item.id}
+                    columns={cardConfig.props?.columns ?? 3}
+                    onSelect={setCurrentEditingCardId}
+                  />
+                </div>
+              ) : (
+                <CardContent
+                  id={item.id}
+                  width={cardWidth}
+                  height={item.height}
+                  cardConfig={cardConfig}
+                  onSelect={setCurrentEditingCardId}
+                />
+              )}
             </div>
           )
         })}

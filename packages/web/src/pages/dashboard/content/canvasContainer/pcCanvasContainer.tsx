@@ -1,16 +1,22 @@
-import { useEffect, useRef, memo } from 'react'
+import { useCallback, useEffect, useRef, memo } from 'react'
 import DragCanvas, { DraggableItem } from '@block-bi/drag-canvas'
 
-import { CANVAS_PARENT_ID } from '@/pages/dashboard/constants'
+import {
+  CANVAS_PARENT_ID,
+  LAYOUT_CONTAINER_COMPONENT_NAME,
+} from '@/pages/dashboard/constants'
+import { LAYOUT_CONTAINER_MIN_HEIGHT } from '@/pages/dashboard/constants/layoutContainer'
 import useIconDrag from '@/pages/dashboard/hook/useIconDrag'
 import useDashboardStore from '@/store/useDashboardStore'
 
 import CardContent from './cardContent'
+import LayoutContainerView from './layoutContainerView'
 
 const PcCanvasContainer = () => {
   const canvasRef = useRef<HTMLDivElement | null>(null)
   useIconDrag(canvasRef)
   const setCurrentEditingCardId = useDashboardStore((state) => state.setCurrentEditingCardId)
+  const updateCardLayout = useDashboardStore((state) => state.updateCardLayout)
   const canvasWidth = useDashboardStore((state) => state.canvasWidth)
   const canvasHeight = useDashboardStore((state) => state.canvasHeight)
   const pageList = useDashboardStore((state) => state.pageList)
@@ -21,6 +27,13 @@ const PcCanvasContainer = () => {
   const hiddenCardIds = hiddenCardIdsByPage[currentPageIndex] ?? []
 
   const visiblePageCards = currentPage.filter((item) => !hiddenCardIds.includes(item.id))
+
+  const handleLayoutChange = useCallback(
+    (cardId: string, layout: { x: number; y: number; width: number; height: number }) => {
+      updateCardLayout(cardId, layout)
+    },
+    [updateCardLayout],
+  )
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -38,35 +51,70 @@ const PcCanvasContainer = () => {
   }, [setCurrentEditingCardId])
 
   return (
-    <DragCanvas
-      width={canvasWidth}
-      height={canvasHeight}
-      canvasParentId={CANVAS_PARENT_ID}
-      className="mx-auto"
-      canvasRef={canvasRef}
-    >
-      {visiblePageCards.map((item) => (
-        <DraggableItem
-          key={item.id}
-          id={item.id}
-          initialPosition={{ x: item.x, y: item.y }}
-          minWidth={100}
-          minHeight={100}
-          initialSize={{
-            width: item.width,
-            height: item.height,
-          }}
-        >
-          <CardContent
-            id={item.id}
-            width={item.width}
-            height={item.height}
-            cardConfig={cardMap[item.id]}
-            onSelect={setCurrentEditingCardId}
-          />
-        </DraggableItem>
-      ))}
-    </DragCanvas>
+    <div data-pc-drag-canvas className="h-full w-full">
+      <DragCanvas
+        width={canvasWidth}
+        height={canvasHeight}
+        canvasParentId={CANVAS_PARENT_ID}
+        className="mx-auto"
+        canvasRef={canvasRef}
+      >
+        {visiblePageCards.map((item) => {
+          const cardConfig = cardMap[item.id]
+          const isLayoutContainer = cardConfig?.componentName === LAYOUT_CONTAINER_COMPONENT_NAME
+
+          if (isLayoutContainer) {
+            const columns = cardConfig.props?.columns ?? 3
+            return (
+              <DraggableItem
+                key={item.id}
+                id={item.id}
+                initialPosition={{ x: 0, y: item.y }}
+                minWidth={canvasWidth}
+                maxWidth={canvasWidth}
+                minHeight={LAYOUT_CONTAINER_MIN_HEIGHT}
+                lockX={0}
+                enabledHandles={['bm']}
+                transparentBackground
+                initialSize={{
+                  width: canvasWidth,
+                  height: item.height,
+                }}
+                notifyItemLayoutChange={(layout) => handleLayoutChange(item.id, layout)}
+              >
+                <LayoutContainerView
+                  id={item.id}
+                  columns={columns}
+                  onSelect={setCurrentEditingCardId}
+                />
+              </DraggableItem>
+            )
+          }
+
+          return (
+            <DraggableItem
+              key={item.id}
+              id={item.id}
+              initialPosition={{ x: item.x, y: item.y }}
+              minWidth={100}
+              minHeight={100}
+              initialSize={{
+                width: item.width,
+                height: item.height,
+              }}
+            >
+              <CardContent
+                id={item.id}
+                width={item.width}
+                height={item.height}
+                cardConfig={cardConfig}
+                onSelect={setCurrentEditingCardId}
+              />
+            </DraggableItem>
+          )
+        })}
+      </DragCanvas>
+    </div>
   )
 }
 
