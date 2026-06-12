@@ -102,11 +102,10 @@ const PcCanvasContainer = () => {
                 width: item.width,
                 height: item.height,
               }}
+              notifyItemLayoutChange={(layout) => handleLayoutChange(item.id, layout)}
             >
               <CardContent
                 id={item.id}
-                width={item.width}
-                height={item.height}
                 cardConfig={cardConfig}
                 onSelect={setCurrentEditingCardId}
               />

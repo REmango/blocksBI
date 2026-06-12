@@ -5,13 +5,14 @@ import { CardItem } from '@/types/dashboard'
 
 interface CardContentProps {
   id: string
-  width: number
-  height: number
+  width?: number
+  height?: number
   cardConfig: CardItem<any>
   onSelect: (id: string) => void
 }
 
 const CardContent: FC<CardContentProps> = ({ id, width, height, cardConfig, onSelect }) => {
+  const isFixedSize = width != null && height != null
   const componentName = cardConfig.componentName
   const CurrentComponent = componentMap[componentName as keyof typeof componentMap]
 
@@ -22,8 +23,8 @@ const CardContent: FC<CardContentProps> = ({ id, width, height, cardConfig, onSe
 
   return (
     <div
-      className="card-view flex flex-col overflow-hidden rounded-md bg-white shadow-[0_1px_6px_rgba(15,23,42,0.08)]"
-      style={{ width, height }}
+      className={`card-view flex flex-col overflow-hidden rounded-md bg-white shadow-[0_1px_6px_rgba(15,23,42,0.08)]${isFixedSize ? '' : ' h-full w-full'}`}
+      style={isFixedSize ? { width, height } : undefined}
       onMouseDown={() => onSelect(id)}
     >
       {(cardConfig.showCardTitle ?? true) && (
@@ -33,7 +34,9 @@ const CardContent: FC<CardContentProps> = ({ id, width, height, cardConfig, onSe
         </div>
       )}
       <div className="card-view-body relative min-h-0 flex-1 p-2">
-        <CurrentComponent option={chartOption} />
+        <div className="h-full min-h-0 w-full">
+          <CurrentComponent option={chartOption} />
+        </div>
       </div>
     </div>
   )

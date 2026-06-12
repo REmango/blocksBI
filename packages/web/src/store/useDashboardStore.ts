@@ -27,6 +27,7 @@ const useDashboardStore = create<DashboardStore>((set) => ({
   cardSearchName: '',
   currentPageIndex: 0,
   pageList: [[], []], // 初始为一个空画布
+  pageNames: ['画布1', '画布2'],
   currentEditingCardId: '',
   cardMap: {}, // 所有的组件
   canvasWidth: 1000,
@@ -86,7 +87,24 @@ const useDashboardStore = create<DashboardStore>((set) => ({
     }),
   setCurrentPageIndex: (currentPageIndex: number) => set({ currentPageIndex }),
   setCurrentEditingCardId: (currentEditingCardId: string) => set({ currentEditingCardId }),
-  addPage: () => set((state) => ({ pageList: [...state.pageList, []] })),
+  addPage: () =>
+    set((state) => ({
+      pageList: [...state.pageList, []],
+      pageNames: [...state.pageNames, `画布${state.pageList.length + 1}`],
+    })),
+  setPageName: (pageIndex: number, name: string) =>
+    set((state) => {
+      if (pageIndex < 0 || pageIndex >= state.pageNames.length) return state
+      const trimmed = name.trim()
+      const nextName = trimmed || `画布${pageIndex + 1}`
+      if (state.pageNames[pageIndex] === nextName) return state
+
+      return {
+        pageNames: state.pageNames.map((pageName, index) =>
+          index === pageIndex ? nextName : pageName,
+        ),
+      }
+    }),
   setCurrentPageLayout: (layout: CardLayout[]) =>
     set((state) => ({
       pageList: state.pageList.map((page, index) => (index === state.currentPageIndex ? layout : page)),

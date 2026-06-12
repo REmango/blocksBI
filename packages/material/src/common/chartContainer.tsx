@@ -28,8 +28,9 @@ const ResponsiveChart: React.FC<{ option: echarts.EChartsOption }> = ({ option }
       resizeObserver.observe(chartRef.current)
     }
 
-    // 清理函数，卸载时移除观察器
-    return () => {}
+    return () => {
+      resizeObserver.disconnect()
+    }
   }, [option])
 
   return <div ref={chartRef} style={{ width: '100%', height: '100%' }} />

@@ -4,11 +4,22 @@ import useDashboardStore from '@/store/useDashboardStore'
 
 import { Tooltip, Tabs } from 'antd'
 
+import CanvasTabLabel from './viewFooter/CanvasTabLabel'
+
 const ViewFooter = () => {
-  const { pageList, setCurrentPageIndex, currentPageIndex, addPage } = useDashboardStore()
+  const pageList = useDashboardStore((state) => state.pageList)
+  const pageNames = useDashboardStore((state) => state.pageNames)
+  const setCurrentPageIndex = useDashboardStore((state) => state.setCurrentPageIndex)
+  const currentPageIndex = useDashboardStore((state) => state.currentPageIndex)
+  const addPage = useDashboardStore((state) => state.addPage)
+  const setPageName = useDashboardStore((state) => state.setPageName)
 
   const switchPage = (key: string) => {
     setCurrentPageIndex(Number(key))
+  }
+
+  const handleRename = (pageIndex: number, name: string) => {
+    setPageName(pageIndex, name)
   }
 
   return (
@@ -26,9 +37,15 @@ const ViewFooter = () => {
               defaultActiveKey="0"
               onChange={switchPage}
               activeKey={String(currentPageIndex)}
-              items={pageList.map((page, index) => ({
+              items={pageList.map((_, index) => ({
                 key: String(index),
-                label: `画布${index + 1}  `,
+                label: (
+                  <CanvasTabLabel
+                    name={pageNames[index] ?? `画布${index + 1}`}
+                    pageIndex={index}
+                    onRename={handleRename}
+                  />
+                ),
               }))}
             />
           </div>

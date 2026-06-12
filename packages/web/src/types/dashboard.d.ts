@@ -61,6 +61,8 @@ export interface DashboardStore {
   setDashboardName: (dashboardName: string) => void
   currentPageIndex: number
   pageList: PageLayout[]
+  pageNames: string[]
+  setPageName: (pageIndex: number, name: string) => void
   cardMap: CardIMap<any>
   currentEditingCardId: string
   canvasWidth: number
