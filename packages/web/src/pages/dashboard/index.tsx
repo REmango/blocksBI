@@ -19,7 +19,7 @@ const Dashboard = () => {
       <Layout className="min-h-0 flex-1">
         <BiSider />
         <Layout className="min-h-0">
-          <Content className="relative overflow-hidden">
+          <Content className="relative flex min-h-0 flex-1 overflow-hidden">
             <BiContent />
           </Content>
           <BiRightSider />

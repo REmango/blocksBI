@@ -5,24 +5,26 @@ import { CANVAS_PARENT_ID } from '../constants'
 
 import CanvasContainer from './canvasContainer'
 
+const VIEW_FOOTER_HEIGHT = 36
+
 const Content = () => {
   return (
-    <>
+    <div className="relative flex h-full min-h-0 flex-col">
       <div
-        className="h-[60px] bg-zinc-800 text-white flex items-center justify-center"
+        className="flex h-[60px] shrink-0 items-center justify-center text-white"
         style={{ background: '#282c34' }}
       >
         <ViewModeToggle />
       </div>
       <div
-        className="bg-zinc-800 overflow-y-auto overflow-x-auto h-full w-full  "
-        style={{ background: '#282c34' }}
+        className="min-h-0 flex-1 overflow-y-auto overflow-x-auto w-full"
+        style={{ background: '#282c34', paddingBottom: VIEW_FOOTER_HEIGHT }}
         id={CANVAS_PARENT_ID}
       >
         <CanvasContainer />
       </div>
       <ViewFooter />
-    </>
+    </div>
   )
 }
 
