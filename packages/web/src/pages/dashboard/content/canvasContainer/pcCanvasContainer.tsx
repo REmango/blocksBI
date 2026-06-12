@@ -9,6 +9,7 @@ import { LAYOUT_CONTAINER_MIN_HEIGHT } from '@/pages/dashboard/constants/layoutC
 import useIconDrag from '@/pages/dashboard/hook/useIconDrag'
 import useDashboardStore from '@/store/useDashboardStore'
 
+import CardContainerWrapper from './CardContainerWrapper'
 import CardContent from './cardContent'
 import LayoutContainerView from './layoutContainerView'
 
@@ -106,11 +107,13 @@ const PcCanvasContainer = () => {
               }}
               notifyItemLayoutChange={(layout) => handleLayoutChange(item.id, layout)}
             >
-              <CardContent
-                id={item.id}
-                cardConfig={cardConfig}
-                onSelect={setCurrentEditingCardId}
-              />
+              <CardContainerWrapper>
+                <CardContent
+                  id={item.id}
+                  cardConfig={cardConfig}
+                  onSelect={setCurrentEditingCardId}
+                />
+              </CardContainerWrapper>
             </DraggableItem>
           )
         })}
