@@ -50,17 +50,75 @@
 
 - Node.js 18+
 - pnpm 11+
-- MongoDB（见下方连接串）
+- Docker（推荐，用于运行 MongoDB）
+- MongoDB 7+（或使用下方 Docker 一键启动）
 
-### 1. 安装依赖
+### 1. 启动 MongoDB（Docker）
+
+使用与 `.env.example` 一致的账号密码启动本地 MongoDB：
+
+```bash
+docker run -d \
+  --name blocksbi-mongo \
+  -p 27017:27017 \
+  -e MONGO_INITDB_ROOT_USERNAME=admin \
+  -e MONGO_INITDB_ROOT_PASSWORD=123456 \
+  mongo:7
+```
+
+常用操作：
+
+```bash
+# 查看运行状态
+docker ps --filter name=blocksbi-mongo
+
+# 停止 / 启动
+docker stop blocksbi-mongo
+docker start blocksbi-mongo
+
+# 删除容器（数据会丢失）
+docker rm -f blocksbi-mongo
+```
+
+连接串（写入 `.env` 的 `MONGODB_URL`）：
+
+```
+mongodb://admin:123456@localhost:27017/blocksbi?authSource=admin
+```
+
+### 2. 安装依赖
 
 ```bash
 pnpm install
 ```
 
-### 2. 配置环境变量
+### 3. 配置环境变量
 
-复制根目录 `.env.example` 为 `.env`：
+**方式一：Shell 导出（推荐开发时使用）**
+
+在启动后端前，于当前终端执行（将 `xxxx` 替换为真实 Key）：
+
+```bash
+# MongoDB（若未写入 .env）
+export MONGODB_URL="mongodb://admin:123456@localhost:27017/blocksbi?authSource=admin"
+
+# LLM Provider（任选其一，示例 DeepSeek）
+export DEEPSEEK_API_KEY="xxxx"
+
+# 可选：显式指定默认模型
+export BLOCKSBI_MODEL="deepseek:deepseek-v4-flash"
+```
+
+也支持其他 Provider：`OPENAI_API_KEY`、`ANTHROPIC_API_KEY`、`GOOGLE_GENERATIVE_AI_API_KEY` 等；或使用 OpenAI 兼容端点：
+
+```bash
+export OPENAI_COMPATIBLE_API_KEY="xxxx"
+export OPENAI_COMPATIBLE_BASE_URL="https://your-api-endpoint/v1"
+```
+
+**方式二：`.env` 文件**
+
+复制根目录 `.env.example` 为 `.env`，按需修改：
 
 ```bash
 cp .env.example .env
@@ -72,6 +130,8 @@ cp .env.example .env
 | `HOST` | `localhost` | 后端监听地址 |
 | `CORS_ORIGIN` | `http://localhost:4200` | 允许的前端来源 |
 | `MONGODB_URL` | 见 `.env.example` | MongoDB 连接串 |
+| `DEEPSEEK_API_KEY` 等 | — | LLM Provider Key，见 [`packages/ai/README.md`](packages/ai/README.md) |
+| `BLOCKSBI_MODEL` | 自动检测 | 默认模型 id 或别名 |
 
 前端可选（构建时注入）：
 
@@ -80,7 +140,7 @@ cp .env.example .env
 | `VITE_API_URL` | `http://localhost:3001` | REST API 地址 |
 | `VITE_WS_URL` | `http://localhost:3001` | Socket.IO 地址 |
 
-### 3. 启动开发服务
+### 4. 启动开发服务
 
 ```bash
 # 终端 1：前端 → http://localhost:4200
@@ -90,7 +150,7 @@ pnpm start
 pnpm start:server
 ```
 
-### 4. 访问看板
+### 5. 访问看板
 
 | 地址 | 说明 |
 |------|------|
