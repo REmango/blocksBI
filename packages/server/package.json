@@ -1,0 +1,11 @@
+{
+  "name": "@block-bi/server",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "@block-bi/ai": "workspace:*",
+    "@fastify/cors": "^11.2.0",
+    "mongoose": "^9.7.1",
+    "uuid": "^14.0.0"
+  }
+}

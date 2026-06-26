@@ -1,0 +1,11 @@
+{
+  "name": "@block-bi/skills",
+  "version": "0.0.1",
+  "private": true,
+  "type": "commonjs",
+  "main": "./src/index.js",
+  "types": "./src/index.ts",
+  "dependencies": {
+    "zod": "^3.25.76"
+  }
+}

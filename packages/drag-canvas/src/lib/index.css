@@ -1,0 +1,150 @@
+.handle {
+  position: absolute;
+  z-index: 2;
+  border: 1px solid #ef7541;
+  height: 8px;
+  width: 8px;
+  box-sizing: border-box;
+  transition: all 300ms linear;
+  border-radius: 2px;
+  background-color: #fff;
+  display: none;
+}
+.handle.active {
+  display: block;
+}
+.handle-tl {
+  width: 8px;
+  height: 8px;
+  top: -3px;
+  left: -3px;
+  cursor: nw-resize;
+}
+
+.handle-tm {
+  width: 24px;
+  top: -3px;
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: n-resize;
+}
+
+.handle-tr {
+  width: 8px;
+  height: 8px;
+  top: -3px;
+  right: -3px;
+  cursor: ne-resize;
+}
+
+.handle-ml {
+  height: 24px;
+  left: -3px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: w-resize;
+}
+
+.handle-mr {
+  right: -3px;
+  height: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: e-resize;
+}
+
+.handle-bl {
+  width: 8px;
+  height: 8px;
+  bottom: -3px;
+  left: -3px;
+  cursor: sw-resize;
+}
+
+.handle-bm {
+  width: 24px;
+  bottom: -3px;
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: s-resize;
+}
+
+.handle-br {
+  width: 8px;
+  height: 8px;
+  bottom: -3px;
+  right: -3px;
+  cursor: se-resize;
+}
+
+.drag-canvas-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(-90deg, rgb(225, 228, 234) 1px, transparent 0px) 0% 0% / 14px 13px,
+    linear-gradient(rgb(225, 228, 234) 1px, transparent 0px) 0% 0% / 14px 13px, rgb(246, 247, 249);
+}
+
+.draggable-item.active::before {
+  left: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: 1;
+  content: '';
+  top: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 2px;
+  border: 2px solid #ef7541;
+}
+
+.drag-canvas-selection {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.draggable-item {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+}
+
+.offscreen-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.drag-canvas-selected-area {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.drag-canvas-selected-area-content {
+  position: absolute;
+  border: 2px dashed #ef7541;
+  background-color: rgba(239, 117, 65, 0.2);
+  pointer-events: none;
+}
+
+.group-selected-area {
+  border: 2px dashed #2f54eb;
+  background-color: rgba(89, 216, 247, 0.05);
+}
+
+.snap-line {
+  position: absolute;
+  border: 1px solid #597ef7;
+  pointer-events: none;
+}
